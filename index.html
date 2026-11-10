@@ -1,0 +1,4003 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메종드커튼 | 내 집에 딱 맞는 커튼</title>
+
+<link rel="preload" as="image" href="img/hero-bg.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Cormorant+Garamond:wght@400;500;600&display=swap">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+
+<style>
+  :root {
+    --red: #A00000;
+    --red-dark: #7E0000;
+    --ink: #222222;
+    --ink-soft: #3A3A3A;
+    --cream: #F7F0EA;
+    --banner-h: 44px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+    color: var(--ink);
+    padding-top: var(--banner-h);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  /* =========================
+     상단 고정 띠배너 (롤링)
+     ========================= */
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: var(--banner-h);
+    background: var(--red);
+    z-index: 1000;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .topbar__viewport {
+    height: var(--banner-h);
+    overflow: hidden;
+  }
+  .topbar__track {
+    list-style: none;
+    transition: transform .6s cubic-bezier(.65, 0, .35, 1);
+  }
+  .topbar__track.no-anim { transition: none; }
+  .topbar__item {
+    height: var(--banner-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-shadow:
+      0 0 4px rgba(255, 255, 255, .55),
+      0 0 10px rgba(255, 210, 160, .45);
+    animation: bannerGlow 2.4s ease-in-out infinite;
+  }
+  .topbar__item em {
+    font-style: normal;
+    color: #FFE3A3;
+    text-shadow:
+      0 0 4px rgba(255, 240, 200, .9),
+      0 0 12px rgba(255, 200, 90, .75),
+      0 0 22px rgba(255, 170, 60, .45);
+  }
+  @keyframes bannerGlow {
+    0%, 100% {
+      text-shadow:
+        0 0 4px rgba(255, 255, 255, .45),
+        0 0 10px rgba(255, 210, 160, .30);
+    }
+    50% {
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, .85),
+        0 0 16px rgba(255, 210, 160, .65),
+        0 0 26px rgba(255, 180, 120, .35);
+    }
+  }
+  .topbar__arrow {
+    width: 16px; height: 16px;
+    transition: transform .25s ease;
+  }
+  .topbar:hover .topbar__arrow { transform: translateX(3px); }
+
+  /* =========================
+     HERO
+     ========================= */
+  .hero {
+    position: relative;
+    min-height: calc(100vh - var(--banner-h));
+    min-height: calc(100svh - var(--banner-h));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 20px 96px;
+    overflow: hidden;
+    text-align: center;
+    isolation: isolate;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: -4% 0 0 0;
+    /* index.html 기준 경로: 같은 폴더 안의 img/hero-bg.png */
+    background: #EFE6DC url('img/hero-bg.png') center / cover no-repeat;
+    z-index: -2;
+    transform: scale(1.08);
+    animation: kenburns 9s ease-out forwards;
+    will-change: transform;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse 46% 52% at 50% 42%, rgba(255, 252, 248, .55), rgba(255, 252, 248, 0) 70%);
+    pointer-events: none;
+  }
+  @keyframes kenburns { to { transform: scale(1); } }
+
+  /* 등장 애니메이션 공통 */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .is-ready .reveal { opacity: 1; transform: none; }
+
+  /* 헤드라인 */
+  .hero__title {
+    font-size: clamp(30px, 4.2vw, 56px);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .ttak {
+    position: relative;
+    display: inline-block;
+    font-weight: 900;
+    color: var(--red);
+    font-size: 1.36em;
+    margin: 0 .12em;
+    vertical-align: -0.06em;
+    transform: scale(.6);
+    opacity: 0;
+    transition: transform .55s cubic-bezier(.34, 1.8, .5, 1), opacity .3s ease;
+    transition-delay: .55s;
+  }
+  .is-ready .ttak { transform: scale(1); opacity: 1; }
+  .ttak__check {
+    position: absolute;
+    left: 50%;
+    top: -0.58em;
+    width: .82em;
+    transform: translateX(-38%);
+    overflow: visible;
+  }
+  .ttak__check path {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    transition: stroke-dashoffset .5s ease-out;
+    transition-delay: 1s;
+  }
+  .is-ready .ttak__check path { stroke-dashoffset: 0; }
+
+  .hero__question {
+    margin-top: 18px;
+    font-size: clamp(30px, 4vw, 54px);
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 18px rgba(255, 255, 255, .9), 0 2px 2px rgba(255, 255, 255, .6);
+  }
+  .hero__desc {
+    margin-top: 30px;
+    font-size: clamp(15px, 1.1vw, 18px);
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* 수상 + 수치 */
+  .proof {
+    position: relative;
+    margin-top: 56px;
+    width: min(680px, 100%);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+  }
+  .award { grid-column: 2; display: flex; flex-direction: column; align-items: center; }
+  .award__year {
+    font-size: 21px; font-weight: 700; line-height: 1.25;
+  }
+  .award__name {
+    font-size: 20px; font-weight: 700; letter-spacing: -0.03em;
+  }
+  .award__cat {
+    margin-top: 6px;
+    font-size: 19px; font-weight: 700; color: var(--red); letter-spacing: -0.03em;
+  }
+  .award__rank {
+    position: relative;
+    margin-top: 4px;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+  }
+  .rank-text {
+    position: relative;
+    z-index: 2;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 124px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    background: linear-gradient(100deg,
+      #A9682A 0%, #E8B272 18%, #FFF4DF 30%, #E7AE68 42%,
+      #B8752F 58%, #F1C98E 74%, #FFF6E6 82%, #C4813C 100%);
+    background-size: 260% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 5px 6px rgba(110, 64, 18, .35));
+    animation: goldShine 3.2s ease-in-out infinite;
+    animation-delay: 1.6s;
+  }
+  @keyframes goldShine {
+    0%   { background-position: 100% 0; }
+    55%  { background-position: 0% 0; }
+    100% { background-position: 0% 0; }
+  }
+
+  /* 반짝 글린트 */
+  .glint {
+    position: absolute;
+    z-index: 3;
+    width: 26px; height: 26px;
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+    animation: glint 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .glint--a { top: 6px;  left: 92px;  animation-delay: 2.2s; }
+  .glint--b { top: 70px; right: 74px; width: 18px; height: 18px; animation-delay: 2.9s; }
+  @keyframes glint {
+    0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+    12%      { opacity: 1; transform: scale(1) rotate(45deg); }
+    24%      { opacity: 0; transform: scale(0) rotate(90deg); }
+  }
+
+  /* 별 리스 */
+  .wreath {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: visible;
+    pointer-events: none;
+  }
+  .wreath--rank { width: 270px; bottom: -8px; z-index: 1; }
+  .wreath--stat { width: 230px; bottom: -14px; }
+
+  .stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 46px;
+    margin-bottom: -150px;
+  }
+  .stat--left  { grid-column: 1; grid-row: 1; }
+  .stat--right { grid-column: 3; grid-row: 1; }
+  .stat__label {
+    font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 18px;
+  }
+  .stat__num {
+    position: relative;
+    z-index: 1;
+    font-family: 'Montserrat', 'Pretendard', sans-serif;
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 14px rgba(255, 255, 255, .9), 0 2px 3px rgba(255, 255, 255, .7);
+  }
+  .stat__unit {
+    position: relative;
+    z-index: 1;
+    margin-top: 8px;
+    font-size: 20px; font-weight: 800; color: var(--red);
+    text-shadow: 0 0 10px rgba(255, 255, 255, .9);
+  }
+
+  /* CTA */
+  .hero__cta {
+    position: relative;
+    margin-top: 220px;
+    width: min(460px, 100%);
+    height: 78px;
+    border-radius: 16px;
+    border: 2px solid #FFFFFF;
+    background: rgba(247, 240, 234, .92);
+    color: var(--red);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(120, 80, 40, .12);
+    transition: background .3s ease, color .3s ease, transform .2s ease, box-shadow .3s ease;
+  }
+  .hero__cta::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    border: 2px solid var(--red);
+    opacity: 0;
+    animation: ctaRing 3s ease-out infinite;
+    animation-delay: 3s;
+    pointer-events: none;
+  }
+  @keyframes ctaRing {
+    0%   { opacity: .55; transform: scale(1); }
+    70%  { opacity: 0;   transform: scale(1.08, 1.25); }
+    100% { opacity: 0;   transform: scale(1.08, 1.25); }
+  }
+  .hero__cta svg { width: 24px; height: 14px; transition: transform .3s ease; }
+  .hero__cta:hover {
+    background: var(--red);
+    color: #FFFFFF;
+    box-shadow: 0 10px 28px rgba(160, 0, 0, .28);
+  }
+  .hero__cta:hover svg { transform: translateX(5px); }
+  .hero__cta:active { transform: scale(.98); }
+  .hero__cta:focus-visible { outline: 3px solid var(--red-dark); outline-offset: 4px; }
+
+  /* 스크롤 유도 */
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .2em;
+    color: rgba(60, 50, 40, .65);
+    text-decoration: none;
+  }
+  .scroll-cue__line {
+    width: 1px;
+    height: 34px;
+    background: rgba(60, 50, 40, .25);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-cue__line::after {
+    content: '';
+    position: absolute;
+    left: 0; top: -40%;
+    width: 1px; height: 40%;
+    background: var(--red);
+    animation: cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue { to { top: 100%; } }
+
+  /* 다음 섹션 자리 (확인용) */
+  .next-placeholder {
+    height: 60vh;
+    display: flex; align-items: center; justify-content: center;
+    background: #EDEDED; color: #999; font-size: 14px;
+  }
+
+
+  /* =========================
+     SECTION 1 · 같은 거실, 다른 분위기 (Before / After)
+     ========================= */
+  .s1 {
+    background: #F6EFE8;
+    padding: 110px 20px 130px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .s1__eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 2.6vw, 42px);
+    font-weight: 400;
+    color: #C9C3BC;
+    letter-spacing: .01em;
+    line-height: 1;
+  }
+  .s1__title {
+    margin-top: 56px;
+    font-size: clamp(36px, 3.6vw, 58px);
+    font-weight: 800;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .s1__hl {
+    position: relative;
+    display: inline-block;
+    color: var(--red);
+    padding: 0 .1em;
+    z-index: 0;
+  }
+  .s1__hl::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: .02em;
+    height: .32em;
+    background: rgba(214, 120, 120, .38);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  .s1.in-view .s1__hl::after { transform: scaleX(1); }
+  .s1.in-view .s1__hl--2::after { transition-delay: .25s; }
+
+  .s1__desc {
+    margin-top: 44px;
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.75;
+    color: #444444;
+  }
+  .s1__desc b { font-weight: 700; color: var(--ink); }
+
+  /* 등장 공통 (스크롤 진입 시) */
+  .s1-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s1.in-view .s1-fade { opacity: 1; transform: none; }
+
+  /* Before / After */
+  .ba {
+    position: relative;
+    margin: 92px auto 0;
+    width: min(744px, 100%);
+    display: flex;
+    align-items: flex-start;
+  }
+  .ba__card { position: relative; }
+  .ba__card img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ba__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+
+  .ba__card--before {
+    width: 43.5%;
+    margin-top: 47px;
+    background: #8E8E8E;
+    border: 4px solid #8E8E8E;
+    border-top: 0;
+    opacity: 0;
+    transform: translateX(-28px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  .ba__card--before .ba__label { height: 52px; font-size: 20px; }
+  .ba__card--before img { filter: grayscale(1); }
+
+  .ba__card--after {
+    width: 56.5%;
+    background: var(--red);
+    border: 5px solid var(--red);
+    border-top: 0;
+    z-index: 1;
+    opacity: 0;
+    transform: scale(.94);
+    transform-origin: left center;
+    transition: opacity .7s ease, transform .8s cubic-bezier(.34, 1.45, .5, 1);
+    transition-delay: 1.05s;
+  }
+  .ba__card--after .ba__label { height: 62px; font-size: 25px; }
+
+  .ba__arrow {
+    position: absolute;
+    z-index: 2;
+    left: 43.5%;
+    top: 46%;
+    width: 64px;
+    height: 62px;
+    margin-left: -18px;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity .5s ease, transform .6s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: .6s;
+    pointer-events: none;
+  }
+  .ba__arrow-tail {
+    width: 34px;
+    height: 40px;
+    background: linear-gradient(90deg, rgba(160, 0, 0, 0), rgba(160, 0, 0, .75));
+  }
+  .ba__arrow-head {
+    width: 30px;
+    height: 62px;
+    background: var(--red);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  .ba.in-view .ba__card--before { opacity: 1; transform: none; }
+  .ba.in-view .ba__arrow        { opacity: 1; transform: none; }
+  .ba.in-view .ba__card--after  { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .s1 { padding: 80px 16px 96px; }
+    .s1__title { margin-top: 36px; }
+    .s1__desc { margin-top: 28px; font-size: 14px; }
+    .ba { margin-top: 56px; }
+    .ba__card--before { margin-top: 24px; border-width: 3px; }
+    .ba__card--before .ba__label { height: 34px; font-size: 13px; }
+    .ba__card--after { border-width: 3px; }
+    .ba__card--after .ba__label { height: 40px; font-size: 16px; }
+    .ba__arrow { width: 40px; height: 38px; margin-left: -12px; }
+    .ba__arrow-tail { width: 20px; height: 24px; }
+    .ba__arrow-head { width: 20px; height: 38px; }
+  }
+
+
+  /* =========================
+     SECTION 2 · 하지만, 왜 어려울까요? (고민 말풍선)
+     ========================= */
+  .s2 {
+    background: #FFFCF7;
+    padding: 56px 20px 140px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* 물음표 장식: 한 번 톡 나타난 뒤 그대로 */
+  .s2__marks {
+    position: relative;
+    width: 520px;
+    max-width: 100%;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .s2__mark {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1;
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(.4);
+    transition: opacity .45s ease, transform .55s cubic-bezier(.34, 1.8, .5, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s2.in-view .s2__mark {
+    opacity: var(--o, 1);
+    transform: translate(-50%, 0) scale(1) rotate(var(--r, 0deg));
+  }
+
+  .s2__but {
+    margin-top: 6px;
+    font-size: clamp(40px, 3.4vw, 56px);
+    font-weight: 900;
+    color: var(--red);
+    letter-spacing: -0.04em;
+  }
+  .s2__title {
+    margin-top: 26px;
+    font-size: clamp(28px, 2.5vw, 40px);
+    font-weight: 700;
+    line-height: 1.55;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+  .s2-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s2.in-view .s2-fade { opacity: 1; transform: none; }
+
+  /* 말풍선 */
+  .s2__chat {
+    width: min(640px, 100%);
+    margin: 110px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 150px;
+  }
+  .bubble {
+    position: relative;
+    width: min(396px, 86%);
+    padding: 34px 40px 26px;
+    border-radius: 16px;
+    background: #FFFFFF;
+    border: 1px solid #E8E4DE;
+    box-shadow: 0 6px 18px rgba(60, 40, 20, .06);
+    opacity: 0;
+    transform: translateY(36px) scale(.92);
+    transform-origin: 80% 100%;
+    transition: opacity .55s ease, transform .65s cubic-bezier(.34, 1.45, .5, 1);
+  }
+  .bubble--left  { align-self: flex-start; }
+  .bubble--right { align-self: flex-end; background: #EEEEEE; border-color: #E2E2E2; }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    right: 64px;
+    bottom: -11px;
+    width: 20px;
+    height: 20px;
+    background: inherit;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: inherit;
+    transform: rotate(45deg) skew(12deg, 12deg);
+  }
+  .bubble__text {
+    font-size: 24px;
+    line-height: 1.7;
+    color: #444444;
+    letter-spacing: -0.02em;
+  }
+  .bubble__text b { font-weight: 700; color: var(--ink); }
+  .bubble__tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 288px;
+    height: 56px;
+    margin: 18px auto 0;
+    border-radius: 999px;
+    background: var(--red);
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    opacity: 0;
+    transform: scale(1.35);
+    transition: opacity .25s ease, transform .4s cubic-bezier(.34, 1.6, .5, 1);
+    transition-delay: .45s;
+  }
+  .bubble.in-view { opacity: 1; transform: none; }
+  .bubble.in-view .bubble__tag { opacity: 1; transform: scale(1); }
+
+  /* 마무리 문구 */
+  .s2__close {
+    margin-top: 190px;
+    font-size: clamp(22px, 1.9vw, 32px);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+  .s2__close strong {
+    position: relative;
+    display: inline-block;
+    font-size: 1.22em;
+    font-weight: 900;
+    color: var(--red);
+    margin-right: .1em;
+  }
+  .s2__close strong::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: .04em;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: .7s;
+  }
+  .s2__close.in-view strong::after { transform: scaleX(1); }
+  .s2__close .line {
+    display: block;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  .s2__close .line + .line { transition-delay: .3s; }
+  .s2__close.in-view .line { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .s2 { padding: 40px 16px 100px; }
+    .s2__marks { height: 140px; transform: scale(.78); transform-origin: top center; margin-bottom: -30px; }
+    .s2__chat { margin-top: 70px; gap: 90px; }
+    .bubble { padding: 26px 22px 22px; }
+    .bubble::after { right: 44px; }
+    .bubble__text { font-size: 15px; }
+    .bubble__tag { height: 46px; font-size: 18px; margin-top: 14px; }
+    .s2__close { margin-top: 120px; }
+  }
+
+
+  /* =========================
+     SECTION 3 · POINT 01 공간에 딱 (Swiper 커버플로우)
+     ========================= */
+  .s3 {
+    background: #EDEDED;
+    padding: 120px 0 110px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .point-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1;
+  }
+  .point-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+    width: 56px;
+    height: 28px;
+    border: 1px solid var(--red);
+    border-radius: 50%;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1;
+  }
+  .s3__title {
+    margin-top: 44px;
+    font-size: clamp(28px, 2.3vw, 40px);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    padding: 0 20px;
+  }
+  .s3__title em { font-style: normal; font-weight: 900; color: var(--red); }
+  .s3__desc {
+    margin-top: 26px;
+    font-size: clamp(15px, 1.1vw, 19px);
+    line-height: 1.5;
+    color: #333333;
+    padding: 0 20px;
+  }
+  .s3-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s3.in-view .s3-fade { opacity: 1; transform: none; }
+
+  /* 슬라이더 */
+  .s3-swiper {
+    margin-top: 40px;
+    padding: 60px 0 36px !important;   /* 뱃지가 위로 튀어나올 공간 */
+    overflow: visible !important;
+  }
+  .s3-swiper .swiper-slide {
+    width: 450px;
+  }
+  .look-card {
+    position: relative;
+    background: #FFFFFF;
+    border-radius: 20px 20px 0px 20px;
+    padding: 34px 29px 24px;
+    text-align: center;
+    transition: opacity .5s ease, filter .5s ease;
+  }
+  .s3-swiper .swiper-slide:not(.swiper-slide-active) .look-card {
+    opacity: .42;
+    filter: saturate(.6);
+  }
+  .look-card__sub {
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: -0.02em;
+  }
+  .look-card__title {
+    margin-top: 6px;
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -0.035em;
+  }
+  .look-card__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 391 / 326;
+    object-fit: cover;
+    margin-top: 22px;
+  }
+
+  /* 광택 뱃지 */
+  .gloss-badge {
+    position: absolute;
+    top: -52px;
+    right: -46px;
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    padding: 5px;
+    background: #F4CDCF;
+    box-shadow: 0 8px 18px rgba(110, 0, 0, .28);
+    z-index: 2;
+  }
+  .gloss-badge__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle at 34% 28%, #D2393C 0%, #A30A0D 42%, #6A0003 78%, #4A0002 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 23px;
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(60, 0, 0, .45);
+  }
+  /* 위쪽 유리 반사광 */
+  .gloss-badge__inner::before {
+    content: '';
+    position: absolute;
+    left: 12%; top: 5%;
+    width: 76%; height: 46%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
+    pointer-events: none;
+  }
+  /* 지나가는 광택 */
+  .gloss-badge__inner::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -80%;
+    width: 45%;
+    height: 140%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .65), rgba(255, 255, 255, 0));
+    transform: rotate(22deg);
+    animation: badgeSheen 3.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes badgeSheen {
+    0%   { left: -80%; }
+    45%  { left: 130%; }
+    100% { left: 130%; }
+  }
+  .gloss-badge__stars {
+    font-size: 8px;
+    letter-spacing: 2px;
+    margin-bottom: 3px;
+    color: #FFE7C2;
+  }
+  .gloss-badge__text { position: relative; z-index: 1; }
+
+  /* 페이지 이동 버튼 */
+  .s3-nav {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 8px;
+    height: 46px;
+    border-radius: 999px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .06);
+    overflow: hidden;
+  }
+  .s3-nav button {
+    width: 52px;
+    height: 46px;
+    border: 0;
+    background: transparent;
+    color: #555555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s ease, color .2s ease;
+  }
+  .s3-nav button:hover { background: var(--red); color: #FFFFFF; }
+  .s3-nav button:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+  .s3-nav button svg { width: 16px; height: 16px; }
+  .s3-pagination {
+    position: static !important;
+    width: auto !important;
+    min-width: 56px;
+    padding: 0 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #888888;
+    border-left: 1px solid #ECECEC;
+    border-right: 1px solid #ECECEC;
+    line-height: 46px;
+  }
+  .s3-pagination .swiper-pagination-current { color: var(--red); }
+
+  @media (max-width: 768px) {
+    .s3 { padding: 80px 0 80px; }
+    .point-label { font-size: 32px; }
+    .s3__title { margin-top: 30px; }
+    .s3__desc { font-size: 14px; }
+    .s3-swiper { margin-top: 24px; padding: 48px 0 28px !important; }
+    .s3-swiper .swiper-slide { width: 76vw; max-width: 340px; }
+    .look-card { padding: 24px 18px 18px; border-radius: 18px; }
+    .look-card__sub { font-size: 14px; }
+    .look-card__title { font-size: 18px; }
+    .look-card__img { margin-top: 14px; }
+    .gloss-badge { width: 84px; height: 84px; top: -38px; right: -18px; padding: 4px; }
+    .gloss-badge__inner { font-size: 16px; }
+    .gloss-badge__stars { font-size: 6px; letter-spacing: 1px; }
+  }
+
+
+  /* =========================
+     SECTION 4 · POINT 02 생활에 딱 (자동 전환 카드)
+     ========================= */
+  .s4 {
+    background: #FFFFFF;
+    padding: 120px 0 100px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .s4__title {
+    margin-top: 40px;
+    font-size: clamp(28px, 2.3vw, 40px);
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    padding: 0 20px;
+  }
+  .s4__title b { font-weight: 800; }
+  .s4__desc {
+    margin-top: 28px;
+    font-size: clamp(15px, 1.1vw, 19px);
+    line-height: 1.45;
+    color: #333333;
+    padding: 0 20px;
+  }
+  .s4__desc b { font-weight: 800; color: var(--red); }
+  .s4-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s4.in-view .s4-fade { opacity: 1; transform: none; }
+
+  /* 슬라이더 */
+  .s4-swiper {
+    max-width: 1240px;
+    margin: 24px auto 0;
+    padding: 70px 0 30px !important;   /* 위 말풍선 태그 + 빨간 빛 번짐 공간 */
+  }
+  .s4-swiper .swiper-slide {
+    width: 411px;
+    cursor: pointer;
+  }
+  .fn-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 5px solid #8E8E8E;
+    transform: scale(.77);
+    transform-origin: 50% 100%;
+    transition: transform .7s cubic-bezier(.2, .7, .2, 1), border-color .5s ease, box-shadow .6s ease;
+  }
+  .fn-card__head {
+    height: 52px;
+    background: #8E8E8E;
+    color: #FFFFFF;
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background .5s ease;
+  }
+  .fn-card__check { width: 22px; height: 16px; }
+  .fn-card__check path {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 0;
+  }
+  .fn-card__body { padding: 14px 13px 30px; }
+  .fn-card__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 373 / 298;
+    object-fit: cover;
+    filter: grayscale(1) brightness(1.05);
+    transition: filter .7s ease;
+  }
+  .fn-card__sub {
+    margin-top: 36px;
+    font-size: 19px;
+    color: #8A8A8A;
+    letter-spacing: -0.03em;
+  }
+  .fn-card__title {
+    margin-top: 8px;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.035em;
+  }
+
+  /* 위쪽 말풍선 태그 (가운데 카드에만 등장) */
+  .fn-card__tag {
+    position: absolute;
+    left: 50%;
+    top: -64px;
+    z-index: 2;
+    min-width: 176px;
+    height: 48px;
+    padding: 0 30px;
+    border-radius: 999px;
+    border: 2px solid var(--red);
+    background: #FFFFFF;
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    box-shadow: 0 0 16px rgba(160, 0, 0, .35);
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(.9);
+    transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.6, .5, 1);
+  }
+  .fn-card__tag::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    background: #FFFFFF;
+    border-right: 2px solid var(--red);
+    border-bottom: 2px solid var(--red);
+    transform: rotate(45deg);
+  }
+
+  /* 가운데(활성) 카드 */
+  .s4-swiper .swiper-slide-active .fn-card {
+    transform: scale(1);
+    border-color: var(--red);
+    box-shadow: 0 0 0 1px rgba(160, 0, 0, .12), 0 0 30px rgba(160, 0, 0, .32);
+  }
+  .s4-swiper .swiper-slide-active .fn-card__head { background: var(--red); }
+  .s4-swiper .swiper-slide-active .fn-card__img { filter: none; }
+  .s4-swiper .swiper-slide-active .fn-card__tag {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    transition-delay: .3s;
+  }
+  .s4-swiper .swiper-slide-active .fn-card__check path {
+    animation: drawCheck .5s ease-out .35s both;
+  }
+  @keyframes drawCheck { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
+
+  /* 기능 탭 + 자동 전환 진행 바 */
+  .s4-tabs {
+    display: inline-flex;
+    gap: 10px;
+    margin-top: 40px;
+    padding: 0 16px;
+  }
+  .s4-tab {
+    position: relative;
+    min-width: 120px;
+    height: 44px;
+    padding: 0 20px;
+    border: 1px solid #DDDDDD;
+    border-radius: 999px;
+    background: #FFFFFF;
+    color: #777777;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color .3s ease, border-color .3s ease;
+  }
+  .s4-tab__bar {
+    position: absolute;
+    left: 22px; right: 22px;
+    bottom: 7px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  .s4-tab.is-active { color: var(--red); border-color: var(--red); }
+  .s4-tab:hover { border-color: var(--red); color: var(--red); }
+  .s4-tab:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+  .s4__note {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #8A8A8A;
+  }
+
+  @media (max-width: 768px) {
+    .s4 { padding: 80px 0 72px; }
+    .s4__desc { font-size: 14px; }
+    .s4-swiper { margin-top: 0; padding: 60px 0 24px !important; }
+    .s4-swiper .swiper-slide { width: 70vw; max-width: 320px; }
+    .fn-card { border-width: 3px; transform: scale(.84); }
+    .fn-card__head { height: 40px; font-size: 16px; }
+    .fn-card__body { padding: 10px 10px 20px; }
+    .fn-card__sub { margin-top: 18px; font-size: 13px; }
+    .fn-card__title { font-size: 16px; margin-top: 4px; }
+    .fn-card__tag { top: -54px; height: 40px; min-width: 140px; padding: 0 18px; font-size: 15px; }
+    .s4-tabs { gap: 6px; margin-top: 28px; }
+    .s4-tab__bar { left: 14px; right: 14px; bottom: 5px; }
+    .s4-tab { min-width: 0; height: 38px; padding: 0 14px; font-size: 13px; }
+    .s4__note { margin-top: 28px; font-size: 12px; }
+  }
+
+
+  /* =========================
+     SECTION 5 · POINT 03 가족에게 딱 (풀배경 + 원단 포인트)
+     ========================= */
+  .s5 {
+    position: relative;
+    background: #FFFFFF;
+    overflow: hidden;
+    text-align: center;
+  }
+  .s5__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1920 / 1136;
+    transform: scale(1.08);
+    transform-origin: 50% 40%;
+    will-change: transform;
+  }
+  .s5__bg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* 창으로 햇살이 한 번 스치는 효과 */
+  .s5__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, rgba(255, 250, 235, 0) 35%, rgba(255, 248, 228, .45) 50%, rgba(255, 250, 235, 0) 65%);
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+  .s5.in-view .s5__media::after {
+    animation: sunSweep 2.6s ease-in-out .6s 1 both;
+  }
+  @keyframes sunSweep {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+  }
+
+  .s5__copy {
+    position: absolute;
+    left: 50%;
+    top: 10.5%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 20px;
+    z-index: 2;
+  }
+  .s5__title {
+    margin-top: 44px;
+    font-size: clamp(28px, 2.1vw, 38px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-shadow: 0 0 18px rgba(255, 255, 255, .9);
+  }
+  .s5__title b {
+    font-weight: 800;
+    color: var(--red);
+  }
+  .s5__key {
+    position: relative;
+    display: inline-block;
+  }
+  .s5__key::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    bottom: .02em;
+    height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .7s cubic-bezier(.2, .7, .2, 1) .9s;
+  }
+  .s5.in-view .s5__key::after { transform: scaleX(1); }
+  .s5__desc {
+    margin-top: 18px;
+    font-size: clamp(15px, 1.05vw, 19px);
+    line-height: 1.6;
+    color: #333333;
+    text-shadow: 0 0 12px rgba(255, 255, 255, .95);
+  }
+  .s5-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s5.in-view .s5-fade { opacity: 1; transform: none; }
+
+  /* 원단 포인트 (사진 속 커튼 위 핀) */
+  .hotspot {
+    position: absolute;
+    z-index: 3;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .s5.in-view .hotspot { opacity: 1; transition-delay: var(--d, 1.4s); }
+  .hotspot__btn {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid #FFFFFF;
+    background: var(--red);
+    color: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(120, 0, 0, .35);
+    transition: transform .25s ease;
+  }
+  .hotspot__btn svg { width: 14px; height: 14px; transition: transform .3s ease; }
+  .hotspot__btn::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--red);
+    opacity: 0;
+  }
+  /* 처음 3번만 맥박처럼 퍼지고 멈춤 */
+  .s5.in-view .hotspot__btn::before {
+    animation: hotPulse 1.8s ease-out var(--d, 1.4s) 3;
+  }
+  @keyframes hotPulse {
+    0%   { opacity: .7; transform: scale(1); }
+    100% { opacity: 0;  transform: scale(2.1); }
+  }
+  .hotspot__btn:hover { transform: scale(1.08); }
+  .hotspot__btn:focus-visible { outline: 3px solid var(--red-dark); outline-offset: 3px; }
+  .hotspot.is-open .hotspot__btn svg { transform: rotate(45deg); }
+
+  .hotspot__card {
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 14px);
+    width: 250px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 10px 28px rgba(60, 40, 20, .16);
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-8px, -50%);
+    transition: opacity .35s ease, transform .35s ease, visibility 0s linear .35s;
+  }
+  .hotspot--left .hotspot__card {
+    left: auto;
+    right: calc(100% + 14px);
+    transform: translate(8px, -50%);
+  }
+  .hotspot.is-open .hotspot__card {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, -50%);
+    transition: opacity .35s ease, transform .35s ease, visibility 0s;
+  }
+  .hotspot__label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -0.01em;
+  }
+  .hotspot__title {
+    margin-top: 4px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+  .hotspot__text {
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #555555;
+  }
+
+  @media (max-width: 768px) {
+    .s5 { padding-top: 76px; }
+    .s5__copy { position: static; transform: none; padding: 0 16px 28px; }
+    .s5__title { margin-top: 30px; }
+    .s5__desc { font-size: 14px; }
+    .hotspot__btn { width: 28px; height: 28px; border-width: 2px; }
+    .hotspot__card { width: 200px; padding: 14px 16px; }
+    .hotspot__title { font-size: 15px; }
+    .hotspot__text { font-size: 12.5px; }
+    /* 모바일에서는 카드가 사진 밖으로 잘리지 않게 핀 위쪽으로 */
+    .hotspot__card,
+    .hotspot--left .hotspot__card {
+      top: auto;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      right: auto;
+      transform: translate(-50%, 6px);
+    }
+    .hotspot.is-open .hotspot__card,
+    .hotspot--left.is-open .hotspot__card { transform: translate(-50%, 0); }
+    /* 왼쪽 핀은 카드를 오른쪽으로 펼쳐 화면 밖으로 안 나가게 */
+    .hotspot--left .hotspot__card { left: -14px; transform: translate(0, 6px); }
+    .hotspot--left.is-open .hotspot__card { transform: translate(0, 0); }
+  }
+
+
+  /* =========================
+     SECTION 6 · WHY 메종드커튼 (비교표)
+     ========================= */
+  .s6 {
+    background: #FFFFFF;
+    padding: 110px 16px 140px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .s6__eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 2.4vw, 42px);
+    font-weight: 400;
+    color: #C9C3BC;
+    line-height: 1;
+  }
+  .s6__why {
+    margin-top: 50px;
+    font-size: clamp(30px, 2.3vw, 42px);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .s6__title {
+    margin-top: 10px;
+    font-size: clamp(44px, 4.2vw, 74px);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    color: var(--red);
+    line-height: 1.15;
+  }
+  .s6__title span { font-size: .78em; font-weight: 400; color: var(--ink); letter-spacing: -0.03em; }
+  .s6__desc {
+    margin-top: 34px;
+    font-size: clamp(15px, 1.2vw, 22px);
+    line-height: 1.45;
+    color: #333333;
+  }
+  .s6-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s6.in-view .s6-fade { opacity: 1; transform: none; }
+
+  /* 비교표: 모든 크기를 em으로 잡아 화면 폭에 맞춰 통째로 줄어듦 */
+  .cmp {
+    --u: 16px;
+    font-size: var(--u);
+    position: relative;
+    width: 44.125em;
+    height: 29em;
+    margin: 76px auto 0;
+    text-align: center;
+  }
+  .cmp ul { list-style: none; }
+
+  /* 왼쪽 빨간 태그 (JS가 각 행의 data-tag 로 자동 생성) */
+  .cmp__tag {
+    position: absolute;
+    left: 0;
+    width: 8em;
+    height: 2.25em;
+    border-radius: .25em;
+    background: linear-gradient(180deg, #D0262B 0%, #A80406 48%, #8A0002 52%, #6E0000 100%);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 .25em .6em rgba(120, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .35);
+    opacity: 0;
+    transform: translateX(-1.5em);
+    transition: opacity .45s ease, transform .5s cubic-bezier(.2, .7, .2, 1), scale .25s ease;
+    transition-delay: calc(1.05s + var(--i) * .38s), calc(1.05s + var(--i) * .38s), 0s;
+  }
+  .cmp__tag::after {
+    content: '';
+    position: absolute;
+    right: -.5em;
+    top: 50%;
+    margin-top: -.45em;
+    border-left: .5em solid #8E0002;
+    border-top: .45em solid transparent;
+    border-bottom: .45em solid transparent;
+  }
+  .cmp__tag span {
+    position: relative;
+    z-index: 2;
+    font-size: 1.125em;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    text-shadow: 0 1px 1px rgba(60, 0, 0, .45);
+  }
+  /* 광택: 위쪽 반사광 */
+  .cmp__tag::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: 1px; right: 1px; top: 1px;
+    height: 46%;
+    border-radius: .2em .2em .6em .6em / .2em .2em .3em .3em;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, .06));
+    pointer-events: none;
+  }
+  /* 광택: 지나가는 빛 (줄마다 시차) */
+  .cmp__tag-sheen {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .cmp__tag-sheen::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: -60%;
+    width: 35%;
+    height: 160%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .7), rgba(255, 255, 255, 0));
+    transform: skewX(-22deg);
+    animation: tagSheen 3.4s ease-in-out infinite;
+    animation-delay: calc(2.4s + var(--i) * .25s);
+  }
+  @keyframes tagSheen {
+    0%   { left: -60%; }
+    40%  { left: 130%; }
+    100% { left: 130%; }
+  }
+
+  /* 메종드커튼 카드 */
+  .cmp__ours {
+    position: absolute;
+    z-index: 2;
+    left: 8.9375em;
+    top: 0;
+    width: 20.25em;
+    height: 28.875em;
+    border: .3125em solid var(--red);
+    border-radius: .875em;
+    background: #FFFFFF;
+    overflow: hidden;
+    box-shadow: 0 0 1.6em rgba(160, 0, 0, .22);
+    opacity: 0;
+    transform: translateY(1.25em);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  .cmp__head {
+    height: 4.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background: var(--red);
+  }
+  .cmp__head span { font-size: 1.375em; font-weight: 700; letter-spacing: -0.03em; }
+  .cmp__ours ul { padding-top: .625em; }
+  .cmp__ours li {
+    position: relative;
+    height: 5.375em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .25s ease;
+  }
+  .cmp__ours li + li::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 12.5em;
+    margin-left: -6.25em;
+    height: 1px;
+    background: #CFCFCF;
+  }
+  .cmp__val {
+    font-size: 1.875em;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    opacity: 0;
+    transform: scale(.82);
+    transition: opacity .4s ease, transform .5s cubic-bezier(.34, 1.6, .5, 1);
+    transition-delay: calc(.95s + var(--i) * .38s);
+  }
+
+  /* 타사 카드 (빨간 카드 뒤에서 밀려 나옴) */
+  .cmp__theirs {
+    position: absolute;
+    z-index: 1;
+    left: 29.1875em;
+    top: 3.375em;
+    width: 14.9375em;
+    height: 23.25em;
+    border-radius: 0 .875em .875em 0;
+    background: #DADADA;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-4em);
+    transition: opacity .6s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: .45s;
+  }
+  .cmp__theirs .cmp__head { height: 3.125em; background: #999999; }
+  .cmp__theirs .cmp__head span { font-size: 1.125em; }
+  .cmp__theirs ul { padding-top: 1.4em; }
+  .cmp__theirs li {
+    position: relative;
+    height: 4.3125em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .25s ease;
+  }
+  .cmp__theirs li + li::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    width: 11.625em;
+    margin-left: -5.8125em;
+    height: 1px;
+    background: #C6C6C6;
+  }
+  .cmp__theirs .cmp__val {
+    font-size: 1.375em;
+    font-weight: 400;
+    color: #777777;
+    letter-spacing: -0.02em;
+    transform: none;
+    transition-delay: calc(.8s + var(--i) * .38s);
+  }
+
+  /* 등장 */
+  .cmp.in-view .cmp__ours,
+  .cmp.in-view .cmp__theirs,
+  .cmp.in-view .cmp__tag { opacity: 1; transform: none; }
+  .cmp.in-view .cmp__val { opacity: 1; transform: none; }
+
+  /* 같은 줄 함께 강조 (마우스를 올린 줄의 태그·우리·타사 값) */
+  .cmp__ours li.is-hl { background: rgba(160, 0, 0, .05); }
+  .cmp__theirs li.is-hl { background: rgba(0, 0, 0, .05); }
+  .cmp__tag.is-hl { scale: 1.07; }
+
+  .cmp__note {
+    margin-top: 36px;
+    font-size: 13px;
+    color: #8A8A8A;
+  }
+
+  @media (max-width: 768px) {
+    .s6 { padding: 80px 16px 96px; }
+    .s6__why { margin-top: 34px; }
+    .s6__desc { font-size: 14px; margin-top: 24px; }
+    /* 모바일: 왼쪽 태그 열은 숨기고 같은 문구를 각 줄 위에 작게 표시 */
+    .cmp {
+      --u: min(16px, calc((100vw - 32px) / 35.1875));
+      width: 35.1875em;
+      margin-top: 48px;
+    }
+    .cmp__tag { display: none; }
+    .cmp__ours { left: 0; }
+    .cmp__theirs { left: 20.25em; }
+    .cmp__ours li { flex-direction: column; gap: .3em; }
+    .cmp__ours li::after {
+      content: attr(data-tag);
+      order: -1;
+      font-size: 1.1em;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: var(--red);
+      border-radius: .3em;
+      padding: .15em .6em;
+      letter-spacing: -0.02em;
+    }
+    .cmp__note { margin-top: 24px; font-size: 12px; }
+  }
+
+
+  /* =========================
+     SECTION 7 · Our Promise (약속 체크리스트)
+     ========================= */
+  .s7 {
+    position: relative;
+    padding: 96px 16px 150px;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .s7__bg {
+    position: absolute;
+    inset: -8% 0 -8% 0;
+    z-index: -1;
+    background: #F8F3EE url('img/section7-bg.png') center / cover no-repeat;
+    will-change: transform;
+  }
+  .s7__eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 2.4vw, 42px);
+    font-weight: 400;
+    color: #CFC8C1;
+    line-height: 1;
+  }
+  .s7__lead {
+    margin-top: 66px;
+    font-size: clamp(32px, 2.6vw, 48px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .s7__title {
+    margin-top: 14px;
+    font-size: clamp(50px, 4.2vw, 76px);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: var(--red);
+    line-height: 1.1;
+  }
+  /* 도장 찍히듯 */
+  .s7__stamp {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(1.5) rotate(-6deg);
+    transition: opacity .25s ease, transform .55s cubic-bezier(.34, 1.7, .5, 1);
+    transition-delay: .35s;
+  }
+  .s7.in-view .s7__stamp { opacity: 1; transform: none; }
+  .s7__desc {
+    margin-top: 44px;
+    font-size: clamp(15px, 1.1vw, 20px);
+    line-height: 1.5;
+    color: #333333;
+  }
+  .s7__desc b { font-weight: 700; color: var(--ink); }
+  .s7-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s7.in-view .s7-fade { opacity: 1; transform: none; }
+
+  /* 약속 카드 */
+  .promise-list {
+    list-style: none;
+    width: min(626px, 100%);
+    margin: 86px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 62px;
+  }
+  .promise {
+    display: grid;
+    grid-template-columns: 148px minmax(0, 1fr);
+    align-items: center;
+    min-height: 138px;
+    padding: 24px 32px 24px 18px;
+    border: 1px solid var(--red);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .92);
+    text-align: left;
+    box-shadow: 0 6px 18px rgba(120, 60, 40, .06);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .7s cubic-bezier(.2, .7, .2, 1), box-shadow .3s ease, translate .3s ease;
+  }
+  .promise.in-view { opacity: 1; transform: none; }
+  .promise:hover {
+    translate: 0 -4px;
+    box-shadow: 0 12px 28px rgba(160, 0, 0, .14);
+  }
+  .promise__mark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .promise__no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: .01em;
+    white-space: nowrap;
+  }
+  /* 붓으로 긋는 체크: 왼쪽부터 드러남 */
+  .promise__check {
+    width: 70px;
+    height: 52px;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path .55s cubic-bezier(.6, 0, .3, 1);
+    transition-delay: .5s;
+  }
+  .promise.in-view .promise__check { clip-path: inset(0 0 0 0); }
+  .promise__title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+  .promise__text {
+    margin-top: 12px;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #444444;
+    letter-spacing: -0.02em;
+  }
+  .promise__text b { font-weight: 700; color: var(--ink); }
+
+  /* CTA */
+  .s7__cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: min(456px, 100%);
+    height: 76px;
+    margin-top: 134px;
+    border-radius: 14px;
+    background: var(--red);
+    color: #FFFFFF;
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(160, 0, 0, .25);
+    overflow: visible;
+    transition: background .3s ease, transform .2s ease, box-shadow .3s ease;
+  }
+  .s7__cta::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 17px;
+    border: 2px solid var(--red);
+    opacity: 0;
+    animation: ctaRing 3s ease-out infinite;
+    animation-delay: 2s;
+    pointer-events: none;
+  }
+  .s7-cta-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), background .3s ease, box-shadow .3s ease;
+  }
+  .s7-cta-fade.in-view { opacity: 1; transform: none; }
+  .s7-cta-fade.in-view:active { transform: scale(.98); }
+  .s7__cta svg { width: 26px; height: 14px; transition: transform .3s ease; }
+  .s7__cta:hover { background: var(--red-dark); box-shadow: 0 14px 30px rgba(160, 0, 0, .32); }
+  .s7__cta:hover svg { transform: translateX(6px); }
+  .s7__cta:active { transform: scale(.98); }
+  .s7__cta:focus-visible { outline: 3px solid var(--red-dark); outline-offset: 4px; }
+
+  @media (max-width: 768px) {
+    .s7 { padding: 72px 16px 96px; }
+    .s7__lead { margin-top: 40px; }
+    .s7__desc { margin-top: 28px; font-size: 14px; }
+    .promise-list { margin-top: 52px; gap: 22px; }
+    .promise { grid-template-columns: 92px minmax(0, 1fr); padding: 20px 18px 20px 8px; min-height: 0; }
+    .promise__no { font-size: 14px; }
+    .promise__check { width: 48px; height: 36px; }
+    .promise__title { font-size: 16px; }
+    .promise__text { margin-top: 8px; font-size: 13px; }
+    .promise__text br { display: none; }
+    .s7__cta { margin-top: 64px; height: 64px; font-size: 18px; }
+  }
+
+
+  /* =========================
+     SECTION 8 · 그런데도 합리적인 이유 (유통 비교 그래프)
+     ========================= */
+  .s8 {
+    background: #FFFFFF;
+    padding: 150px 16px 140px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .s8__title {
+    font-size: clamp(36px, 3.3vw, 62px);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.045em;
+    color: var(--ink);
+  }
+  .s8__title em { font-style: normal; color: var(--red); }
+  .s8__title .q { display: inline-block; margin-top: .45em; }
+  .s8__desc {
+    margin-top: 40px;
+    font-size: clamp(15px, 1.05vw, 19px);
+    line-height: 1.6;
+    color: #333333;
+  }
+  .s8-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s8.in-view .s8-fade { opacity: 1; transform: none; }
+
+  /* 그래프: em 단위로 잡아 화면 폭에 맞춰 통째로 줄어듦 */
+  .chart {
+    --u: 16px;
+    font-size: var(--u);
+    position: relative;
+    width: 39.25em;
+    height: 31.5em;
+    margin: 96px auto 0;
+  }
+  .chart__base {
+    position: absolute;
+    left: 0; right: 0;
+    top: 27.75em;
+    height: 2px;
+    background: #DADADA;
+  }
+  .chart__col {
+    position: absolute;
+    top: 5.625em;
+    width: 9.75em;
+    height: 22.125em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .chart__col--them { left: 7.25em; gap: .25em; }
+  .chart__col--us { left: 24.5625em; }
+
+  /* 일반 업체 막대 구간 (아래에서부터 하나씩 쌓임) */
+  .seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    transition: transform .55s cubic-bezier(.2, .7, .2, 1), filter .25s ease;
+    transition-delay: var(--d, 0s);
+    cursor: default;
+  }
+  .seg span {
+    font-size: 1.125em;
+    color: #333333;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transition: opacity .3s ease;
+    transition-delay: calc(var(--d, 0s) + .35s);
+  }
+  .seg--cost   { height: 7.3125em; background: #8E8E8E; }
+  .seg--cost span { color: #F2F2F2; }
+  .seg--own    { height: 4.6875em; background: #ABABAB; }
+  .seg--whole  { height: 4.6875em; background: #C9C9C9; }
+  .seg--retail { height: 4.6875em; background: #ECECEC; }
+  .chart.in-view .seg { transform: scaleY(1); }
+  .chart.in-view .seg span { opacity: 1; }
+  .seg--dist:hover { filter: brightness(.94); }
+
+  /* 메종드커튼 막대 */
+  .us-gap {
+    position: relative;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--red);
+    border-bottom: 0;
+    background: rgba(160, 0, 0, 0);
+    opacity: 0;
+    transform: translateY(-.6em);
+    transition: opacity .45s ease 2.5s, transform .5s cubic-bezier(.2, .7, .2, 1) 2.5s, background .3s ease;
+  }
+  .us-gap__label {
+    font-size: 1.375em;
+    color: var(--red);
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: .3em;
+  }
+  .us-gap__x {
+    display: inline-block;
+    font-weight: 700;
+    transform: scale(0);
+    transition: transform .4s cubic-bezier(.34, 1.8, .5, 1) 2.85s;
+  }
+  .us-bar {
+    height: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    box-shadow: 0 0 1.4em rgba(160, 0, 0, .35);
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    transition: transform .8s cubic-bezier(.2, .7, .2, 1) 1.7s;
+  }
+  .us-bar span {
+    font-size: 1.375em;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transition: opacity .3s ease 2.3s;
+  }
+  .chart.in-view .us-bar { transform: scaleY(1); }
+  .chart.in-view .us-bar span { opacity: 1; }
+  .chart.in-view .us-gap { opacity: 1; transform: none; }
+  .chart.in-view .us-gap__x { transform: scale(1); }
+  /* 일반 업체의 도매·판매점 마진에 마우스를 올리면 '빠진 자리'가 함께 강조 */
+  .chart.is-linked .us-gap { background: rgba(160, 0, 0, .07); }
+  .chart.is-linked .seg--dist { outline: 2px dashed var(--red); outline-offset: -2px; }
+
+  /* 가격 라벨 */
+  .chart__price {
+    position: absolute;
+    top: 1em;
+    width: 9.75em;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .chart__price span { font-size: 1.75em; }
+  .chart__price--them { left: 7.25em; color: var(--ink); transition-delay: .2s; }
+  .chart__price--us { left: 24.5625em; color: var(--red); transition-delay: 1.7s; }
+  .chart__price--us span { font-size: 2em; text-shadow: 0 0 .5em rgba(160, 0, 0, .25); }
+  .chart.in-view .chart__price { opacity: 1; }
+
+  /* 이름 라벨 */
+  .chart__name {
+    position: absolute;
+    top: 29.4em;
+    width: 9.75em;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .chart__name span { font-size: 1.125em; }
+  .chart__name--them { left: 7.25em; color: var(--ink); }
+  .chart__name--us { left: 24.5625em; color: var(--red); }
+  .chart__name--us span { font-size: 1.25em; text-shadow: 0 0 .5em rgba(160, 0, 0, .25); }
+
+  /* 25% 저렴 광택 뱃지 (도장처럼 찍힘) */
+  .s8-badge {
+    position: absolute;
+    left: 33.75em;
+    top: -1.8em;
+    width: 7.75em;
+    height: 7.75em;
+    padding: .3125em;
+    border-radius: 50%;
+    background: #F6D3D5;
+    box-shadow: 0 .5em 1.1em rgba(110, 0, 0, .28);
+    opacity: 0;
+    transform: scale(1.6) rotate(-40deg);
+    transition: opacity .25s ease 3.15s, transform .55s cubic-bezier(.34, 1.6, .5, 1) 3.15s;
+  }
+  .chart.in-view .s8-badge { opacity: 1; transform: rotate(-18deg); }
+  .s8-badge .gloss-badge__inner { font-size: 1.6em; line-height: 1.05; }
+  .s8-badge .gloss-badge__stars { font-size: .32em; letter-spacing: .2em; margin-bottom: .25em; }
+  .s8-badge .gloss-badge__text small { display: block; font-size: .72em; margin-top: .15em; }
+
+  .s8__note {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #8A8A8A;
+  }
+
+  @media (max-width: 768px) {
+    .s8 { padding: 96px 16px 90px; }
+    .s8__desc { margin-top: 26px; font-size: 14px; }
+    .chart {
+      --u: min(16px, calc((100vw - 40px) / 42));
+      margin-top: 64px;
+      margin-left: calc(50% - 21em);
+    }
+    .seg span { font-size: 1.45em; }
+    .us-gap__label, .us-bar span { font-size: 1.7em; }
+    .chart__name span { font-size: 1.5em; }
+    .chart__name--us span { font-size: 1.6em; }
+    .s8__note { font-size: 12px; }
+  }
+
+
+  /* =========================
+     SECTION 9 · 실제 고객 후기 (Swiper 커버플로우 · 자동 재생)
+     ========================= */
+  .s9 {
+    background: #EDEDED;
+    padding: 80px 0 90px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .s9__title {
+    font-size: clamp(40px, 3.3vw, 62px);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    color: var(--red);
+    line-height: 1.2;
+  }
+  .s9__desc {
+    margin-top: 48px;
+    font-size: clamp(15px, 1.1vw, 20px);
+    line-height: 1.55;
+    color: #333333;
+    padding: 0 16px;
+  }
+  .s9__desc b { font-weight: 800; color: var(--ink); }
+  .s9-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s9.in-view .s9-fade { opacity: 1; transform: none; }
+
+  /* 수치 (Hero와 같은 별 장식 · 숫자 카운터) */
+  .s9-stats {
+    display: flex;
+    justify-content: center;
+    gap: 136px;
+    margin-top: 46px;
+  }
+  .s9-stat {
+    position: relative;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 44px;
+  }
+  .s9-stat .stat__label { font-size: 15px; margin-bottom: 14px; }
+  .s9-stat .stat__num { font-size: 46px; }
+  .s9-stat .stat__unit { font-size: 17px; margin-top: 6px; }
+  .s9-stat .wreath--stat { width: 184px; bottom: -6px; }
+
+  /* 슬라이더 */
+  .s9-swiper {
+    margin-top: 60px;
+    padding: 70px 0 30px !important;
+    overflow: visible !important;
+  }
+  .s9-swiper .swiper-slide { width: 450px; }
+  .review-card {
+    position: relative;
+    background: #FFFFFF;
+    border-radius: 20px 20px 0 20px;
+    padding: 36px 29px 30px;
+    text-align: center;
+    transition: opacity .5s ease, filter .5s ease;
+  }
+  .s9-swiper .swiper-slide:not(.swiper-slide-active) .review-card {
+    opacity: .42;
+    filter: saturate(.6);
+  }
+  .review-card__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 391 / 326;
+    object-fit: cover;
+  }
+  .review-card__stars {
+    display: inline-flex;
+    gap: 2px;
+    margin-top: 14px;
+    font-size: 16px;
+    color: #E2C9C9;
+    letter-spacing: 0;
+  }
+  .review-card__stars i { font-style: normal; transition: color .25s ease; }
+  /* 가운데 카드가 되면 별이 왼쪽부터 하나씩 채워짐 */
+  .s9-swiper .swiper-slide-active .review-card__stars i { color: var(--red); }
+  .s9-swiper .swiper-slide-active .review-card__stars i:nth-child(1) { transition-delay: .35s; }
+  .s9-swiper .swiper-slide-active .review-card__stars i:nth-child(2) { transition-delay: .45s; }
+  .s9-swiper .swiper-slide-active .review-card__stars i:nth-child(3) { transition-delay: .55s; }
+  .s9-swiper .swiper-slide-active .review-card__stars i:nth-child(4) { transition-delay: .65s; }
+  .s9-swiper .swiper-slide-active .review-card__stars i:nth-child(5) { transition-delay: .75s; }
+  .review-card__title {
+    margin-top: 8px;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -0.035em;
+  }
+  .review-card__text {
+    margin: 16px -10px 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #555555;
+    letter-spacing: -0.025em;
+    text-wrap: pretty;        /* 줄 끝에 한두 글자만 남지 않게 자연스럽게 줄바꿈 */
+  }
+  .review-card__text br { display: none; }   /* 후기 길이가 달라도 고르게 흐르도록 강제 줄바꿈 해제 */
+  .s9-swiper .gloss-badge { width: 122px; height: 122px; top: -72px; right: -50px; }
+  .s9-swiper .gloss-badge__inner { font-size: 26px; line-height: 1.05; transform: rotate(-20deg); }
+  .s9-swiper .gloss-badge__text small { display: block; font-size: .78em; margin-top: .1em; }
+
+  @media (max-width: 768px) {
+    .s9 { padding: 70px 0 70px; }
+    .s9__desc { margin-top: 28px; font-size: 14px; }
+    .s9-stats { gap: 28px; margin-top: 36px; }
+    .s9-stat { width: 150px; padding-bottom: 36px; }
+    .s9-stat .stat__num { font-size: 36px; }
+    .s9-stat .wreath--stat { width: 150px; }
+    .s9-swiper { margin-top: 30px; padding: 56px 0 24px !important; }
+    .s9-swiper .swiper-slide { width: 76vw; max-width: 340px; }
+    .review-card { padding: 22px 16px 22px; border-radius: 18px; }
+    .review-card__title { font-size: 18px; }
+    .review-card__text { font-size: 13px; margin: 10px 0 0; }
+    .s9-swiper .gloss-badge { width: 86px; height: 86px; top: -44px; right: -16px; padding: 4px; }
+    .s9-swiper .gloss-badge__inner { font-size: 18px; }
+  }
+
+
+  /* =========================
+     SECTION 10 · 무료 방문 실측 신청 (4단계 폼 + 모달)
+     ========================= */
+  .s10 {
+    background: #FFFFFF;
+    padding: 100px 16px 120px;
+    text-align: center;
+    scroll-margin-top: var(--banner-h);
+  }
+  .s10__kicker { font-size: 19px; font-weight: 700; color: var(--ink); }
+  .s10__title {
+    margin-top: 10px;
+    font-size: clamp(44px, 3.5vw, 66px);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    color: var(--red);
+    line-height: 1.2;
+  }
+  .s10__desc {
+    margin-top: 22px;
+    font-size: clamp(17px, 1.4vw, 27px);
+    line-height: 1.55;
+    color: #333333;
+  }
+  .s10-fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+    transition-delay: var(--d, 0s);
+  }
+  .s10.in-view .s10-fade { opacity: 1; transform: none; }
+
+  .apply {
+    position: relative;
+    width: min(662px, 100%);
+    margin: 70px auto 0;
+    border: 3px solid var(--red);
+    background: #FFFFFF;
+    text-align: left;
+    overflow: hidden;
+  }
+  /* 진행 막대 */
+  .apply__progress {
+    position: absolute;
+    left: 0; top: 0;
+    height: 4px;
+    width: 25%;
+    background: var(--red);
+    transition: width .5s cubic-bezier(.2, .7, .2, 1);
+  }
+  .apply__inner { padding: 36px 27px 30px; }
+
+  .step { display: none; border: 0; margin: 0; padding: 0; min-width: 0; }
+  .step.is-active { display: block; animation: stepIn .45s cubic-bezier(.2, .7, .2, 1); }
+  .step.is-back.is-active { animation-name: stepInBack; }
+  @keyframes stepIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+  @keyframes stepInBack { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+
+  .step__head { text-align: center; }
+  .step__no { font-family: 'Montserrat', 'Pretendard', sans-serif; font-size: 19px; font-weight: 700; color: var(--red); }
+  .step__title { margin-top: 14px; font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+  .step__sub { margin-top: 6px; font-size: 14.5px; color: #333333; }
+  .step__body { margin-top: 56px; min-height: 280px; }
+
+  .field + .field { margin-top: 36px; }
+  .field__label { display: block; font-size: 15px; color: #333333; margin-bottom: 12px; }
+  .field__label .req { color: #E00000; }
+  .field__label small { font-size: 12px; color: #555555; }
+  .field__error { margin-top: 8px; font-size: 13px; color: #D00000; display: none; }
+  .field.has-error .field__error { display: block; }
+  .field.has-error .input { border-color: #E00000; box-shadow: 0 0 0 3px rgba(224, 0, 0, .1); }
+
+  /* 선택 버튼 */
+  .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 21px 16px; }
+  .choices--auto { display: flex; flex-wrap: wrap; gap: 11px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; pointer-events: none; }
+  .choice span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 61px;
+    padding: 0 26px;
+    border: 1px solid var(--red);
+    border-radius: 4px;
+    font-size: 17px;
+    color: #333333;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .15s ease;
+    user-select: none;
+  }
+  .choices--auto .choice span { height: 50px; padding: 0 25px; }
+  .choice span:hover { background: #FFF5F5; }
+  .choice input:checked + span { background: var(--red); color: #FFFFFF; font-weight: 700; animation: pick .25s ease; }
+  .choice input:checked + span::before {
+    content: '';
+    width: 12px; height: 7px;
+    border-left: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    transform: rotate(-45deg) translateY(-2px);
+  }
+  .choice input:focus-visible + span { outline: 2px solid var(--red-dark); outline-offset: 2px; }
+  @keyframes pick { 50% { transform: scale(.96); } }
+
+  /* 입력창 */
+  .input {
+    width: 100%;
+    height: 61px;
+    padding: 0 22px;
+    border: 1px solid var(--red);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 17px;
+    color: var(--ink);
+    background: #FFFFFF;
+    transition: box-shadow .2s ease, border-color .2s ease;
+  }
+  .input::placeholder { color: #C8C8C8; }
+  .input:focus { outline: none; box-shadow: 0 0 0 3px rgba(160, 0, 0, .12); }
+  textarea.input { height: 100px; padding: 18px 22px; resize: vertical; line-height: 1.5; }
+  .field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px; }
+  .field-row .field + .field { margin-top: 0; }
+
+  /* 확인 요약 */
+  .summary {
+    border: 1px solid var(--red);
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin-top: -24px;
+  }
+  .summary__row { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 9px 0; }
+  .summary__key { font-size: 15px; color: var(--red); }
+  .summary__val { font-size: 15px; color: var(--ink); font-weight: 600; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+  .summary__val.is-empty { color: #AAAAAA; font-weight: 400; }
+  .summary__edit {
+    border: 0; background: none; font-family: inherit;
+    font-size: 13px; color: #888888; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+  }
+  .summary__edit:hover { color: var(--red); }
+  .step--confirm .field { margin-top: 34px; }
+
+  .agree { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
+  .agree__check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #8A8A8A; cursor: pointer; }
+  .agree__check small { font-size: 12px; }
+  .agree__check input { width: 16px; height: 16px; accent-color: var(--red); cursor: pointer; }
+  .agree__view {
+    border: 0; background: none; font-family: inherit;
+    font-size: 14px; color: #8A8A8A; border-bottom: 1px solid #BBBBBB; padding-bottom: 1px; cursor: pointer;
+  }
+  .agree__view:hover { color: var(--red); border-color: var(--red); }
+  .agree.has-error .agree__check { color: #D00000; }
+
+  /* 버튼 */
+  .apply__nav { margin-top: 30px; }
+  .btn-next {
+    width: 100%;
+    height: 64px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--red);
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background .25s ease, transform .15s ease;
+  }
+  .btn-next svg { width: 18px; height: 14px; transition: transform .25s ease; }
+  .btn-next:hover { background: var(--red-dark); }
+  .btn-next:hover svg { transform: translateX(4px); }
+  .btn-next:active { transform: scale(.99); }
+  .btn-next:focus-visible { outline: 3px solid var(--red-dark); outline-offset: 3px; }
+  .btn-prev {
+    display: none;
+    margin: 0 auto 14px;
+    border: 0; background: none; font-family: inherit;
+    font-size: 14px; color: #888888; cursor: pointer;
+  }
+  .btn-prev.is-shown { display: block; }
+  .btn-prev:hover { color: var(--red); }
+  .apply__foot { margin-top: 10px; text-align: center; font-size: 12px; color: #777777; }
+
+  /* 모달 공통 */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal.is-open { display: flex; }
+  .modal__dim { position: absolute; inset: 0; background: rgba(20, 10, 10, .55); animation: dimIn .25s ease; }
+  .modal__box {
+    position: relative;
+    width: min(460px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 36px 30px 28px;
+    border-radius: 14px;
+    background: #FFFFFF;
+    text-align: left;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+    animation: boxIn .35s cubic-bezier(.2, .7, .2, 1);
+  }
+  @keyframes dimIn { from { opacity: 0; } }
+  @keyframes boxIn { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+  .modal__close {
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px; border: 0; border-radius: 50%;
+    background: transparent; color: #666666; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal__close:hover { background: #F4F4F4; color: var(--ink); }
+  .modal__close svg { width: 16px; height: 16px; }
+  .modal__title { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
+  .modal__list { margin-top: 18px; display: grid; gap: 12px; list-style: none; }
+  .modal__list li { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; font-size: 14.5px; line-height: 1.55; color: #444444; }
+  .modal__list b { color: var(--red); font-weight: 700; }
+  .modal__note { margin-top: 18px; padding-top: 16px; border-top: 1px solid #EEEEEE; font-size: 13.5px; line-height: 1.6; color: #666666; }
+  .modal__ok {
+    width: 100%; height: 54px; margin-top: 24px; border: 0; border-radius: 8px;
+    background: var(--red); color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .modal__ok:hover { background: var(--red-dark); }
+
+  /* 완료 모달 */
+  .done { text-align: center; }
+  .done__icon {
+    width: 68px; height: 68px; margin: 0 auto; border-radius: 50%;
+    background: var(--red); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(160, 0, 0, .3);
+  }
+  .done__icon svg { width: 30px; height: 22px; }
+  .done__icon path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: drawCheck .5s ease-out .25s forwards; }
+  .done .modal__title { margin-top: 18px; text-align: center; }
+  .done__sub { margin-top: 8px; font-size: 14.5px; color: #555555; line-height: 1.55; }
+  .done .summary { margin-top: 22px; text-align: left; }
+  .done .summary__row { grid-template-columns: 76px minmax(0, 1fr); }
+
+  body.is-modal-open { overflow: hidden; }
+
+  @media (max-width: 768px) {
+    .s10 { padding: 72px 16px 90px; }
+    .s10__kicker { font-size: 15px; }
+    .apply { margin-top: 44px; border-width: 2px; }
+    .apply__inner { padding: 28px 16px 22px; }
+    .step__title { font-size: 19px; }
+    .step__sub { font-size: 13px; }
+    .step__body { margin-top: 36px; min-height: 0; }
+    .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; }
+    .choice span { height: 50px; padding: 0 8px; font-size: 14.5px; }
+    .choices--auto { gap: 8px; }
+    .choices--auto .choice span { height: 44px; padding: 0 14px; }
+    .input { height: 54px; font-size: 16px; padding: 0 16px; }
+    .field-row { grid-template-columns: 1fr; gap: 26px; }
+    .summary { margin-top: 0; padding: 14px 16px; }
+    .summary__row { grid-template-columns: 64px minmax(0, 1fr) auto; }
+    .summary__key, .summary__val { font-size: 14px; }
+    .btn-next { height: 58px; font-size: 16px; }
+    .modal__box { padding: 32px 22px 22px; }
+  }
+
+  /* =========================
+     반응형
+     ========================= */
+  @media (max-width: 768px) {
+    :root { --banner-h: 40px; }
+    .topbar__item { font-size: 14px; }
+    .hero { padding: 48px 16px 88px; }
+    .ttak__check { top: -0.55em; }
+    .hero__desc { margin-top: 22px; }
+    .proof { margin-top: 40px; grid-template-columns: 1fr 1fr; row-gap: 12px; }
+    .award { grid-column: 1 / -1; grid-row: 1; }
+    .award__year, .award__name { font-size: 16px; }
+    .award__cat { font-size: 15px; }
+    .award__rank { width: 230px; height: 150px; }
+    .rank-text { font-size: 92px; }
+    .wreath--rank { width: 210px; }
+    .glint--a { left: 62px; }
+    .glint--b { right: 46px; top: 50px; }
+    .stat { margin-bottom: 0; padding-bottom: 34px; }
+    .stat--left  { grid-column: 1; grid-row: 2; transform: none; }
+    .stat--right { grid-column: 2; grid-row: 2; transform: none; }
+    .stat__label { font-size: 15px; margin-bottom: 12px; }
+    .stat__num { font-size: 40px; }
+    .stat__unit { font-size: 16px; }
+    .wreath--stat { width: 170px; bottom: -8px; }
+    .hero__cta { margin-top: 48px; height: 64px; font-size: 18px; }
+  }
+
+  /* 모션 최소화 설정 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .reveal, .ttak { opacity: 1; transform: none; }
+    .ttak__check path { stroke-dashoffset: 0; }
+    .hero__bg { transform: none; }
+    .s1-fade, .ba__card--before, .ba__card--after, .ba__arrow { opacity: 1; transform: none; }
+    .s1__hl::after { transform: scaleX(1); }
+    .s2-fade, .bubble, .bubble__tag, .s2__close .line { opacity: 1; transform: none; }
+    .s2__mark { opacity: var(--o, 1); transform: translate(-50%, 0); }
+    .s2__close strong::after { transform: scaleX(1); }
+    .s3-fade { opacity: 1; transform: none; }
+    .s4-fade { opacity: 1; transform: none; }
+    .s5-fade, .hotspot { opacity: 1; transform: none; }
+    .hotspot { transform: translate(-50%, -50%); }
+    .s5__key::after { transform: scaleX(1); }
+    .s5__media { transform: none; }
+    .s6-fade, .cmp__ours, .cmp__theirs, .cmp__tag, .cmp__val { opacity: 1; transform: none; }
+    .s7-fade, .s7__stamp, .promise, .s7-cta-fade { opacity: 1; transform: none; }
+    .promise__check { clip-path: none; }
+    .s8-fade, .chart__price, .us-gap, .seg span, .us-bar span { opacity: 1; transform: none; }
+    .seg, .us-bar, .us-gap__x { transform: none; }
+    .s8-badge { opacity: 1; transform: rotate(-18deg); }
+    .s9-fade { opacity: 1; transform: none; }
+    .s10-fade { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG 공용 정의: 금색 별 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF4C8"/>
+      <stop offset=".35" stop-color="#EBC866"/>
+      <stop offset=".7" stop-color="#B98A2E"/>
+      <stop offset="1" stop-color="#F3D88A"/>
+    </linearGradient>
+    <symbol id="star" viewBox="-1 -1 2 2">
+      <path fill="url(#gold)" d="M0,-1 L.247,-.34 L.951,-.309 L.4,.13 L.588,.809 L0,.42 L-.588,.809 L-.4,.13 L-.951,-.309 L-.247,-.34 Z"/>
+    </symbol>
+    <symbol id="sparkle" viewBox="-1 -1 2 2">
+      <path fill="#FFFFFF" d="M0,-1 C.08,-.25 .25,-.08 1,0 C.25,.08 .08,.25 0,1 C-.08,.25 -.25,.08 -1,0 C-.25,-.08 -.08,-.25 0,-1 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- 상단 고정 띠배너 -->
+<a class="topbar" href="#apply" aria-label="100명 한정 맞춤 실측, 20% 할인 이벤트 신청하러 가기">
+  <div class="topbar__viewport">
+    <ul class="topbar__track" id="topbarTrack">
+      <li class="topbar__item"><span><em>100명 한정</em> 맞춤 실측</span></li>
+      <li class="topbar__item"><span><em>20% 할인</em> 이벤트</span></li>
+      <li class="topbar__item" aria-hidden="true"><span><em>100명 한정</em> 맞춤 실측</span></li>
+    </ul>
+  </div>
+</a>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+
+  <h1 class="hero__title reveal" style="--d:.1s">
+    내 집에
+    <span class="ttak">딱<svg class="ttak__check" viewBox="0 0 40 26" fill="none" aria-hidden="true"><path d="M3 13 L13 22 L37 3" stroke="#A00000" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    맞는 커튼
+  </h1>
+  <p class="hero__question reveal" style="--d:.35s">아직도 고민 중이신가요?</p>
+  <p class="hero__desc reveal" style="--d:.6s">같은 거실, 다른 분위기<br>우리 집 창에 딱 맞는 커튼은 따로 있습니다.</p>
+
+  <div class="proof">
+    <!-- 수상 -->
+    <div class="award reveal" style="--d:.85s">
+      <p class="award__year">2023</p>
+      <p class="award__name">KCIA 한국 소비자산업평가</p>
+      <p class="award__cat">커튼/블라인드, 침구 부문</p>
+      <div class="award__rank">
+        <span class="rank-text">1위</span>
+        <svg class="glint glint--a" aria-hidden="true"><use href="#sparkle" width="100%" height="100%"/></svg>
+        <svg class="glint glint--b" aria-hidden="true"><use href="#sparkle" width="100%" height="100%"/></svg>
+        <svg class="wreath wreath--rank" viewBox="0 0 240 150" aria-hidden="true">
+          <use href="#star" x="8"   y="2"   width="20" height="20" style="--sd:1.0s"/>
+          <use href="#star" x="212" y="2"   width="20" height="20" style="--sd:1.05s"/>
+          <use href="#star" x="0"   y="42"  width="24" height="24" style="--sd:1.15s"/>
+          <use href="#star" x="216" y="42"  width="24" height="24" style="--sd:1.2s"/>
+          <use href="#star" x="32"  y="82"  width="34" height="34" style="--sd:1.3s"/>
+          <use href="#star" x="174" y="82"  width="34" height="34" style="--sd:1.35s"/>
+          <use href="#star" x="96"  y="100" width="48" height="48" style="--sd:1.45s"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 누적 시공 -->
+    <div class="stat stat--left reveal" style="--d:1.1s">
+      <p class="stat__label">누적 시공</p>
+      <span class="stat__num" data-count="7200" aria-label="7,200">0</span>
+      <span class="stat__unit">건+</span>
+      <svg class="wreath wreath--stat" viewBox="0 0 240 150" aria-hidden="true">
+        <use href="#star" x="10"  y="0"   width="18" height="18" style="--sd:1.5s"/>
+        <use href="#star" x="212" y="0"   width="18" height="18" style="--sd:1.55s"/>
+        <use href="#star" x="2"   y="40"  width="22" height="22" style="--sd:1.6s"/>
+        <use href="#star" x="216" y="40"  width="22" height="22" style="--sd:1.65s"/>
+        <use href="#star" x="30"  y="80"  width="32" height="32" style="--sd:1.7s"/>
+        <use href="#star" x="178" y="80"  width="32" height="32" style="--sd:1.75s"/>
+        <use href="#star" x="98"  y="100" width="44" height="44" style="--sd:1.85s"/>
+      </svg>
+    </div>
+
+    <!-- 고객 만족도 -->
+    <div class="stat stat--right reveal" style="--d:1.2s">
+      <p class="stat__label">고객 만족도</p>
+      <span class="stat__num" data-count="99" aria-label="99">0</span>
+      <span class="stat__unit">%</span>
+      <svg class="wreath wreath--stat" viewBox="0 0 240 150" aria-hidden="true">
+        <use href="#star" x="10"  y="0"   width="18" height="18" style="--sd:1.6s"/>
+        <use href="#star" x="212" y="0"   width="18" height="18" style="--sd:1.65s"/>
+        <use href="#star" x="2"   y="40"  width="22" height="22" style="--sd:1.7s"/>
+        <use href="#star" x="216" y="40"  width="22" height="22" style="--sd:1.75s"/>
+        <use href="#star" x="30"  y="80"  width="32" height="32" style="--sd:1.8s"/>
+        <use href="#star" x="178" y="80"  width="32" height="32" style="--sd:1.85s"/>
+        <use href="#star" x="98"  y="100" width="44" height="44" style="--sd:1.95s"/>
+      </svg>
+    </div>
+  </div>
+
+  <a class="hero__cta reveal" style="--d:1.4s" href="#apply">
+    무료 실측 받아보기
+    <svg viewBox="0 0 24 14" fill="none" aria-hidden="true"><path d="M1 7h21M16 1l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+
+  <a class="scroll-cue reveal" style="--d:1.8s" href="#next" aria-label="아래로 스크롤">
+    SCROLL
+    <span class="scroll-cue__line"></span>
+  </a>
+</section>
+
+<!-- SECTION 1 · Before / After -->
+<section class="s1" id="next" aria-labelledby="s1-title">
+  <p class="s1__eyebrow s1-fade">New Mood</p>
+  <h2 class="s1__title s1-fade" id="s1-title" style="--d:.1s">
+    바꾼 건 <span class="s1__hl">커튼</span><br>
+    <span class="s1__hl s1__hl--2">하나</span> 뿐입니다
+  </h2>
+  <p class="s1__desc s1-fade" style="--d:.25s">
+    벽지도, 가구도 그대로 두고 <b>커튼 하나만</b> 바꿨습니다.<br>
+    <b>창의 크기와 빛이 드는 방향, 공간의 톤까지 맞춰</b> 고른 커튼은<br>
+    비어 보이던 거실을 <b>오래 머물고 싶은 공간</b>으로 바꿉니다.
+  </p>
+
+  <div class="ba">
+    <figure class="ba__card ba__card--before">
+      <figcaption class="ba__label">BEFORE</figcaption>
+      <img src="img/section1-img1.png" alt="커튼 시공 전 거실" width="336" height="303" loading="lazy">
+    </figure>
+
+    <div class="ba__arrow" aria-hidden="true">
+      <span class="ba__arrow-tail"></span>
+      <span class="ba__arrow-head"></span>
+    </div>
+
+    <figure class="ba__card ba__card--after">
+      <figcaption class="ba__label">AFTER</figcaption>
+      <img src="img/section1-img2.png" alt="메종드커튼 시공 후 거실" width="411" height="364" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<!-- SECTION 2 · 고민 말풍선 -->
+<section class="s2" aria-labelledby="s2-title">
+  <div class="s2__marks" aria-hidden="true">
+    <span class="s2__mark" style="left:260px; top:30px;  font-size:110px; --d:.05s">?</span>
+    <span class="s2__mark" style="left:91px;  top:96px;  font-size:70px; --d:.2s;  --r:-8deg">?</span>
+    <span class="s2__mark" style="left:401px; top:140px; font-size:70px; --d:.3s;  --r:8deg">?</span>
+    <span class="s2__mark" style="left:38px;  top:72px;  font-size:62px; --d:.35s; --o:.3">?</span>
+    <span class="s2__mark" style="left:354px; top:40px;  font-size:62px; --d:.4s;  --o:.3">?</span>
+    <span class="s2__mark" style="left:152px; top:170px; font-size:62px; --d:.45s; --o:.6">?</span>
+    <span class="s2__mark" style="left:505px; top:124px; font-size:62px; --d:.5s;  --o:.7">?</span>
+  </div>
+
+  <p class="s2__but s2-fade" style="--d:.3s">하지만</p>
+  <h2 class="s2__title s2-fade" id="s2-title" style="--d:.45s">막상 고르려면<br>왜 이렇게 어려울까요?</h2>
+
+  <div class="s2__chat">
+    <div class="bubble bubble--left">
+      <p class="bubble__text">“기성품은 <b>길이가 꼭 애매</b>해요.<br>바닥에 끌리거나, 한 뼘씩 짧거나.”</p>
+      <span class="bubble__tag">사이즈 이슈</span>
+    </div>
+    <div class="bubble bubble--right">
+      <p class="bubble__text">“사진이랑 <b>실제 색이 너무 달라</b>서<br>결국 반품했어요.”</p>
+      <span class="bubble__tag">사진과 다른 제품</span>
+    </div>
+    <div class="bubble bubble--left">
+      <p class="bubble__text">“암막이라더니 아침마다<br><b>틈으로 빛이 새서</b> 깨요.”</p>
+      <span class="bubble__tag">기능성 문제</span>
+    </div>
+    <div class="bubble bubble--right">
+      <p class="bubble__text">“아이 방에 달 건데,<br><b>원단이 괜찮은 건지</b> 걱정돼요.”</p>
+      <span class="bubble__tag">친환경 문제</span>
+    </div>
+  </div>
+
+  <p class="s2__close">
+    <span class="line">딱 맞는 커튼은,</span>
+    <span class="line"><strong>사이즈만</strong> 맞는 커튼이 아닙니다.</span>
+  </p>
+</section>
+
+<!-- SECTION 3 · POINT 01 공간에 딱 -->
+<section class="s3" aria-labelledby="s3-title">
+  <p class="point-label s3-fade">POINT</p>
+  <span class="point-num s3-fade" style="--d:.05s">01</span>
+  <h2 class="s3__title s3-fade" id="s3-title" style="--d:.15s">색, 질감, 주름 폭까지<br><em>공간</em>을 기준으로 고르세요.</h2>
+  <p class="s3__desc s3-fade" style="--d:.3s">벽지·바닥·가구 톤과 어울려야 합니다.<br>같은 화이트도 공간에 따라 차갑게도, 따뜻하게도 보입니다.</p>
+
+  <!--
+    [슬라이드 수정 방법]
+    · 사진 교체: img 폴더의 section3-slide1.png ~ section3-slide6.png 파일을 같은 이름으로 덮어쓰면 끝
+    · 문구 교체: 각 슬라이드의 look-card__sub(회색 1줄), look-card__title(빨간 1줄), gloss-badge__text(뱃지) 수정
+    · 슬라이드 추가: <div class="swiper-slide"> … </div> 묶음을 통째로 복사해 붙여넣기
+    · 슬라이드 수와 상관없이 무한 루프가 돌도록 코드가 자동으로 복제합니다 (페이지 숫자는 실제 장수로 표시)
+  -->
+  <div class="swiper s3-swiper s3-fade" style="--d:.45s">
+    <div class="swiper-wrapper">
+      <!-- ▼ 슬라이드 1 ─ 이미지: img/section3-slide1.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 1 끝 -->
+      <!-- ▼ 슬라이드 2 ─ 이미지: img/section3-slide2.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 2 끝 -->
+      <!-- ▼ 슬라이드 3 ─ 이미지: img/section3-slide3.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 3 끝 -->
+      <!-- ▼ 슬라이드 4 ─ 이미지: img/section3-slide4.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 4 끝 -->
+      <!-- ▼ 슬라이드 5 ─ 이미지: img/section3-slide5.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 5 끝 -->
+      <!-- ▼ 슬라이드 6 ─ 이미지: img/section3-slide6.png / 문구 2줄 / 뱃지 문구 -->
+      <div class="swiper-slide">
+        <article class="look-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">톤온톤<br>포인트</span>
+            </div>
+          </div>
+          <p class="look-card__sub">밋밋한 화이트톤 인테리어에</p>
+          <h3 class="look-card__title">그레이지 한 폭으로 깊이를 더!</h3>
+          <img class="look-card__img" src="./img/section3-img.png" alt="화이트톤 거실에 그레이지 포인트 커튼을 시공한 모습" loading="lazy">
+        </article>
+      </div>
+      <!-- ▲ 슬라이드 6 끝 -->
+    </div>
+  </div>
+
+  <div class="s3-nav s3-fade" style="--d:.55s">
+    <button type="button" class="s3-prev" aria-label="이전 사례">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="s3-pagination"></div>
+    <button type="button" class="s3-next" aria-label="다음 사례">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- SECTION 4 · POINT 02 생활에 딱 -->
+<section class="s4" aria-labelledby="s4-title">
+  <p class="point-label s4-fade">POINT</p>
+  <span class="point-num s4-fade" style="--d:.05s">02</span>
+  <h2 class="s4__title s4-fade" id="s4-title" style="--d:.15s">빛, 온도, 시선까지<br><b>생활을 기준으로 고르세요.</b></h2>
+  <p class="s4__desc s4-fade" style="--d:.3s">남향 거실엔 <b>온도조절</b>, 침실엔 <b>암막</b>, 저층엔 <b>사생활보호</b><br>창마다 필요한 기능이 다릅니다.</p>
+
+  <!--
+    [카드 수정 방법]
+    · 사진 교체: img 폴더의 section4-img1.png(암막) / section4-img3.png(온도조절) / section4-img2.png(사생활보호)를 같은 이름으로 덮어쓰기
+    · 문구 교체: fn-card__tag(위 말풍선), fn-card__head(빨간·회색 머리), fn-card__sub(회색 1줄), fn-card__title(굵은 1줄)
+    · 카드 순서를 바꾸면 아래 탭(s4-tab) 순서도 같이 바꿔 주세요
+  -->
+  <div class="s4-tabs s4-fade" style="--d:.4s" role="tablist" aria-label="기능별 사례">
+    <button type="button" class="s4-tab" role="tab">암막<span class="s4-tab__bar"></span></button>
+    <button type="button" class="s4-tab" role="tab">온도조절<span class="s4-tab__bar"></span></button>
+    <button type="button" class="s4-tab" role="tab">사생활보호<span class="s4-tab__bar"></span></button>
+  </div>
+
+  <div class="swiper s4-swiper s4-fade" style="--d:.5s">
+    <div class="swiper-wrapper">
+      <!-- ▼ 카드 1 ─ 이미지: img/section4-img1.png / 위 태그 / 머리 문구 / 아래 2줄 -->
+      <div class="swiper-slide">
+        <article class="fn-card">
+          <span class="fn-card__tag">안방 / 암막</span>
+          <div class="fn-card__head"><svg class="fn-card__check" viewBox="0 0 22 16" fill="none" aria-hidden="true"><path d="M2 8.5 L8 14 L20 2" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>햇빛 차단</div>
+          <div class="fn-card__body">
+            <img class="fn-card__img" src="./img/section4-img1.png" alt="암막 커튼으로 낮에도 어둡게 만든 침실" loading="lazy">
+            <p class="fn-card__sub">아침 햇살에 매일 깼던 안방</p>
+            <h3 class="fn-card__title">한낮에도 깊은 밤처럼 잠들어요</h3>
+          </div>
+        </article>
+      </div>
+      <!-- ▲ 카드 1 끝 -->
+      <!-- ▼ 카드 2 ─ 이미지: img/section4-img3.png / 위 태그 / 머리 문구 / 아래 2줄 -->
+      <div class="swiper-slide">
+        <article class="fn-card">
+          <span class="fn-card__tag">남향 거실 / 온도조절</span>
+          <div class="fn-card__head"><svg class="fn-card__check" viewBox="0 0 22 16" fill="none" aria-hidden="true"><path d="M2 8.5 L8 14 L20 2" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>온도조절</div>
+          <div class="fn-card__body">
+            <img class="fn-card__img" src="./img/section4-img3.png" alt="햇빛이 강하게 드는 남향 거실의 커튼" loading="lazy">
+            <p class="fn-card__sub">여름엔 덥고 겨울엔 썰렁했던 거실</p>
+            <h3 class="fn-card__title">햇빛은 걸러내고, 온기는 지켜요</h3>
+          </div>
+        </article>
+      </div>
+      <!-- ▲ 카드 2 끝 -->
+      <!-- ▼ 카드 3 ─ 이미지: img/section4-img2.png / 위 태그 / 머리 문구 / 아래 2줄 -->
+      <div class="swiper-slide">
+        <article class="fn-card">
+          <span class="fn-card__tag">아이방 / 사생활보호</span>
+          <div class="fn-card__head"><svg class="fn-card__check" viewBox="0 0 22 16" fill="none" aria-hidden="true"><path d="M2 8.5 L8 14 L20 2" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>사생활보호</div>
+          <div class="fn-card__body">
+            <img class="fn-card__img" src="./img/section4-img2.png" alt="쉬폰 커튼으로 바깥 시선을 가린 아이방" loading="lazy">
+            <p class="fn-card__sub">맞은편 동이 훤히 보이던 아이방</p>
+            <h3 class="fn-card__title">빛은 들이고, 시선은 막았어요</h3>
+          </div>
+        </article>
+      </div>
+      <!-- ▲ 카드 3 끝 -->
+    </div>
+  </div>
+
+
+  <p class="s4__note s4-fade" style="--d:.6s">※ 이해를 돕기 위한 예시 사진입니다.</p>
+</section>
+
+<!-- SECTION 5 · POINT 03 가족에게 딱 -->
+<section class="s5" aria-labelledby="s5-title">
+  <div class="s5__copy">
+    <p class="point-label s5-fade">POINT</p>
+    <span class="point-num s5-fade" style="--d:.05s">03</span>
+    <h2 class="s5__title s5-fade" id="s5-title" style="--d:.15s">원단 성분, 세탁까지<br><b><span class="s5__key">가족</span>을 기준으로 고르세요.</b></h2>
+    <p class="s5__desc s5-fade" style="--d:.3s">하루 종일 가족과 함께 숨 쉬는 원단입니다.<br>유해물질 기준과 세탁 가능 여부를 꼭 확인하세요.</p>
+  </div>
+
+  <!--
+    [배경·포인트 수정 방법]
+    · 배경 사진: img/section5-bg.png 를 같은 이름으로 덮어쓰기 (가로 1920 × 세로 1136 비율 권장)
+    · 핀 위치: 각 hotspot 의 style="left:%; top:%" 값을 바꾸면 사진 위 위치가 바뀝니다
+    · 핀 문구: hotspot__label / hotspot__title / hotspot__text 수정
+      ※ 인증·시험 관련 문구는 실제 보유한 시험성적서·인증 내용으로 꼭 맞춰 주세요
+  -->
+  <div class="s5__media">
+    <img class="s5__bg" src="./img/section5-bg.png" alt="얇은 쉬폰 커튼이 드리운 밝은 거실에서 가족이 소파에 앉아 웃고 있는 모습" loading="lazy">
+
+    <div class="hotspot hotspot--left" style="left:21%; top:58%; --d:1.5s">
+      <button type="button" class="hotspot__btn" aria-expanded="false" aria-label="원단 성분 설명 보기"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="hotspot__card" role="tooltip">
+        <p class="hotspot__label">원단 성분</p>
+        <p class="hotspot__title">아이 방에도 안심 원단</p>
+        <p class="hotspot__text">유해물질 시험을 거친 원단으로<br>국내 자체 공장에서 제작합니다.</p>
+      </div>
+    </div>
+
+    <div class="hotspot" style="left:66%; top:36%; --d:1.8s">
+      <button type="button" class="hotspot__btn" aria-expanded="false" aria-label="세탁 관리 설명 보기"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="hotspot__card" role="tooltip">
+        <p class="hotspot__label">세탁 관리</p>
+        <p class="hotspot__title">떼어서 빨 수 있는 커튼</p>
+        <p class="hotspot__text">원단별 세탁 방법을 안내해 드려<br>오래도록 깨끗하게 쓸 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 · WHY 메종드커튼 -->
+<section class="s6" aria-labelledby="s6-title">
+  <p class="s6__eyebrow s6-fade">WHY</p>
+  <p class="s6__why s6-fade" style="--d:.1s">왜?</p>
+  <h2 class="s6__title s6-fade" id="s6-title" style="--d:.2s">메종드커튼<span>일까요?</span></h2>
+  <p class="s6__desc s6-fade" style="--d:.35s">같은 커튼이라도 어디서 맞추느냐에 따라<br>가격도, 품질도, 결과도 달라집니다.</p>
+
+  <!--
+    [비교표 수정 방법]
+    · 줄마다 data-tag(왼쪽 빨간 태그), 메종드커튼 값, 타사 값을 같은 순서로 맞춰 주세요
+    · 가격 줄의 data-from / data-to 는 숫자 카운트다운(100 → 75)에 쓰입니다
+  -->
+  <div class="cmp" role="table" aria-label="메종드커튼과 타사 비교">
+    <div class="cmp__ours" role="rowgroup">
+      <div class="cmp__head"><span>메종드커튼</span></div>
+      <ul>
+        <li data-row="0" data-tag="25% 저렴" style="--i:0"><span class="cmp__val"><span class="cmp__count" data-from="100" data-to="75">75</span>만원</span></li>
+        <li data-row="1" data-tag="100% 국내산" style="--i:1"><span class="cmp__val">국내산</span></li>
+        <li data-row="2" data-tag="전문가가 직접!" style="--i:2"><span class="cmp__val">인테리어 전문가</span></li>
+        <li data-row="3" data-tag="직접 방문 실측" style="--i:3"><span class="cmp__val">무료 방문 실측</span></li>
+      </ul>
+    </div>
+    <div class="cmp__theirs" role="rowgroup">
+      <div class="cmp__head"><span>타사</span></div>
+      <ul>
+        <li data-row="0" style="--i:0"><span class="cmp__val">100만원</span></li>
+        <li data-row="1" style="--i:1"><span class="cmp__val">수입산</span></li>
+        <li data-row="2" style="--i:2"><span class="cmp__val">비전문가</span></li>
+        <li data-row="3" style="--i:3"><span class="cmp__val">출장비 별도</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="cmp__note s6-fade" style="--d:.5s">※ 가격은 거실 커튼 기준 예시이며, 공간과 원단에 따라 달라질 수 있습니다.</p>
+</section>
+
+<!-- SECTION 7 · Our Promise -->
+<section class="s7" aria-labelledby="s7-title">
+  <div class="s7__bg" aria-hidden="true"></div>
+
+  <p class="s7__eyebrow s7-fade">Our Promise</p>
+  <p class="s7__lead s7-fade" style="--d:.1s">메종드커튼이</p>
+  <h2 class="s7__title" id="s7-title"><span class="s7__stamp">약속합니다!</span></h2>
+  <p class="s7__desc s7-fade" style="--d:.55s">기준을 아는 것과,<br><b>그 기준대로 만드는 것</b>은 다릅니다.</p>
+
+  <!-- [약속 수정] 각 약속의 promise__title(굵은 제목), promise__text(설명) 수정 -->
+  <ol class="promise-list">
+    <!-- ▼ 약속 1 -->
+    <li class="promise">
+      <div class="promise__mark">
+        <span class="promise__no">PROMISE 01</span>
+        <svg class="promise__check" viewBox="0 0 70 52" aria-hidden="true"><path fill="#A00000" d="M3 30.5c3.2-2.3 6.8-2.6 9.6-.4 3.1 2.4 6.2 6.6 9.1 10.6C33.4 24.3 47.5 10.2 66.6 2.2c.9-.4 1.5.7.8 1.3C50.4 17.6 37.6 32.3 26.4 48.6c-1.6 2.3-4.7 2.4-6.4.2C15.6 42.9 10.3 36.4 3.3 32.3c-.8-.4-.9-1.3-.3-1.8z"/></svg>
+      </div>
+      <div class="promise__body">
+        <h3 class="promise__title">인테리어 전문가가 직접 방문합니다</h3>
+        <p class="promise__text">치수만 재고 돌아가지 않습니다. 벽지·가구·채광을 보고, <br>원단 샘플을 우리 집 창에 직접 대보며 제안합니다.</p>
+      </div>
+    </li>
+    <!-- ▼ 약속 2 -->
+    <li class="promise">
+      <div class="promise__mark">
+        <span class="promise__no">PROMISE 02</span>
+        <svg class="promise__check" viewBox="0 0 70 52" aria-hidden="true"><path fill="#A00000" d="M3 30.5c3.2-2.3 6.8-2.6 9.6-.4 3.1 2.4 6.2 6.6 9.1 10.6C33.4 24.3 47.5 10.2 66.6 2.2c.9-.4 1.5.7.8 1.3C50.4 17.6 37.6 32.3 26.4 48.6c-1.6 2.3-4.7 2.4-6.4.2C15.6 42.9 10.3 36.4 3.3 32.3c-.8-.4-.9-1.3-.3-1.8z"/></svg>
+      </div>
+      <div class="promise__body">
+        <h3 class="promise__title">창마다 필요한 기능만 제안합니다</h3>
+        <p class="promise__text">방향·층수·용도에 맞춰 암막, 온도조절, 사생활보호 중 <br>무엇이 필요한지 설명드립니다. 필요 없는 옵션은 권하지 않습니다.</p>
+      </div>
+    </li>
+    <!-- ▼ 약속 3 -->
+    <li class="promise">
+      <div class="promise__mark">
+        <span class="promise__no">PROMISE 03</span>
+        <svg class="promise__check" viewBox="0 0 70 52" aria-hidden="true"><path fill="#A00000" d="M3 30.5c3.2-2.3 6.8-2.6 9.6-.4 3.1 2.4 6.2 6.6 9.1 10.6C33.4 24.3 47.5 10.2 66.6 2.2c.9-.4 1.5.7.8 1.3C50.4 17.6 37.6 32.3 26.4 48.6c-1.6 2.3-4.7 2.4-6.4.2C15.6 42.9 10.3 36.4 3.3 32.3c-.8-.4-.9-1.3-.3-1.8z"/></svg>
+      </div>
+      <div class="promise__body">
+        <h3 class="promise__title">국내 자체 공장에서, 검증된 원단으로 만듭니다</h3>
+        <p class="promise__text">원단 입고부터 봉제·검수까지 우리 공장에서 진행합니다. <br><b>[원단 시험성적서 / 인증명]</b>을 직접 확인하실 수 있습니다.</p>
+      </div>
+    </li>
+  </ol>
+
+  <a class="s7__cta s7-fade" href="#apply">
+    무료 실측 받아보기
+    <svg viewBox="0 0 26 14" fill="none" aria-hidden="true"><path d="M1 7h23M18 1l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</section>
+
+<!-- SECTION 8 · 그런데도 합리적인 이유 (유통 비교 그래프) -->
+<section class="s8" aria-labelledby="s8-title">
+  <h2 class="s8__title s8-fade" id="s8-title"><em>전문가 방문</em>에<br><em>맞춤제작</em>까지<br><span class="q">비싸지 않을까요?</span></h2>
+  <p class="s8__desc s8-fade" style="--d:.2s">전문가가 재고, 우리 공장에서 만들어도<br>일반 업체보다 합리적인 데는 이유가 있습니다.</p>
+
+  <!--
+    [그래프 수정 방법]
+    · 가격: data-count 숫자 (일반 업체 100 / 메종드커튼 75)
+    · 메종드커튼 막대 높이: .us-bar height(75%) 와 .us-gap height(25%) — 합이 100%가 되게
+    · 일반 업체 구간 높이: .seg--cost / --own / --whole / --retail 의 height
+  -->
+  <div class="chart" role="img" aria-label="일반 커튼 업체 100만원은 제작 원가에 자체·도매·판매점 마진이 쌓인 가격이고, 메종드커튼 75만원은 도매 단계 없이 자체 공장에서 바로 만든 가격으로 25% 저렴합니다.">
+    <p class="chart__price chart__price--them"><span><b class="js-count" data-count="100">100</b>만원</span></p>
+    <p class="chart__price chart__price--us"><span><b class="js-count" data-count="75">75</b>만원</span></p>
+
+    <div class="chart__col chart__col--them">
+      <div class="seg seg--retail seg--dist" style="--d:1.1s"><span>판매점 마진</span></div>
+      <div class="seg seg--whole seg--dist" style="--d:.8s"><span>도매 마진</span></div>
+      <div class="seg seg--own" style="--d:.5s"><span>자체 마진</span></div>
+      <div class="seg seg--cost" style="--d:.2s"><span>제작 원가</span></div>
+    </div>
+
+    <div class="chart__col chart__col--us">
+      <div class="us-gap"><span class="us-gap__label">도매 <b class="us-gap__x">X</b></span></div>
+      <div class="us-bar"><span>자체 공장</span></div>
+    </div>
+
+    <div class="chart__base"></div>
+
+    <p class="chart__name chart__name--them"><span>일반 커튼 업체</span></p>
+    <p class="chart__name chart__name--us"><span>메종드커튼</span></p>
+
+    <div class="s8-badge" aria-hidden="true">
+      <div class="gloss-badge__inner">
+        <span class="gloss-badge__stars">★★★★★</span>
+        <span class="gloss-badge__text">25%<small>저렴!</small></span>
+      </div>
+    </div>
+  </div>
+
+  <p class="s8__note s8-fade" style="--d:.3s">※ 막대의 구간 비율은 이해를 돕기 위한 예시입니다.</p>
+</section>
+
+<!-- SECTION 9 · 실제 고객 후기 -->
+<section class="s9" aria-labelledby="s9-title">
+  <h2 class="s9__title s9-fade" id="s9-title">실제 고객 후기</h2>
+  <p class="s9__desc s9-fade" style="--d:.15s"><b>7,200건의 시공</b>과 <b>99% 만족도</b>가 증명합니다<br>먼저 고민하고, 먼저 바꾼 분들의 이야기</p>
+
+  <div class="s9-stats s9-fade" style="--d:.3s">
+    <div class="s9-stat">
+      <p class="stat__label">누적 시공</p>
+      <span class="stat__num" data-count="7200" aria-label="7,200">7,200</span>
+      <span class="stat__unit">건+</span>
+      <svg class="wreath wreath--stat" viewBox="0 0 240 150" aria-hidden="true">
+        <use href="#star" x="10"  y="0"   width="18" height="18"/>
+        <use href="#star" x="212" y="0"   width="18" height="18"/>
+        <use href="#star" x="2"   y="40"  width="22" height="22"/>
+        <use href="#star" x="216" y="40"  width="22" height="22"/>
+        <use href="#star" x="30"  y="80"  width="32" height="32"/>
+        <use href="#star" x="178" y="80"  width="32" height="32"/>
+        <use href="#star" x="98"  y="100" width="44" height="44"/>
+      </svg>
+    </div>
+    <div class="s9-stat">
+      <p class="stat__label">고객 만족도</p>
+      <span class="stat__num" data-count="99" aria-label="99">99</span>
+      <span class="stat__unit">%</span>
+      <svg class="wreath wreath--stat" viewBox="0 0 240 150" aria-hidden="true">
+        <use href="#star" x="10"  y="0"   width="18" height="18"/>
+        <use href="#star" x="212" y="0"   width="18" height="18"/>
+        <use href="#star" x="2"   y="40"  width="22" height="22"/>
+        <use href="#star" x="216" y="40"  width="22" height="22"/>
+        <use href="#star" x="30"  y="80"  width="32" height="32"/>
+        <use href="#star" x="178" y="80"  width="32" height="32"/>
+        <use href="#star" x="98"  y="100" width="44" height="44"/>
+      </svg>
+    </div>
+  </div>
+
+  <!--
+    [후기 슬라이드 수정 방법]
+    · 사진 교체: img 폴더의 section9-img1.png ~ section9-img6.png 를 같은 이름으로 덮어쓰기
+    · 문구 교체: gloss-badge__text(뱃지 %), review-card__title(지역 | 제품), review-card__text(후기)
+    · 후기 추가: <div class="swiper-slide"> … </div> 묶음을 통째로 복사해 붙여넣기
+    · 슬라이드 수와 상관없이 무한 루프가 돌도록 코드가 자동으로 복제합니다
+    ※ 실제 고객 후기·사진만 사용해 주세요 (고객 동의 필요)
+  -->
+  <div class="swiper s9-swiper s9-fade" style="--d:.45s">
+    <div class="swiper-wrapper">
+      <!-- ▼ 후기 1 ─ 사진: img/section9-img1.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">40%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 1 끝 -->
+      <!-- ▼ 후기 2 ─ 사진: img/section9-img2.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">30%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 2 끝 -->
+      <!-- ▼ 후기 3 ─ 사진: img/section9-img3.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">25%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 3 끝 -->
+      <!-- ▼ 후기 4 ─ 사진: img/section9-img4.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">37%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 4 끝 -->
+      <!-- ▼ 후기 5 ─ 사진: img/section9-img5.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">30%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 5 끝 -->
+      <!-- ▼ 후기 6 ─ 사진: img/section9-img6.png / 뱃지 % / 지역·제품 / 후기 -->
+      <div class="swiper-slide">
+        <article class="review-card">
+          <div class="gloss-badge" aria-hidden="true">
+            <div class="gloss-badge__inner">
+              <span class="gloss-badge__stars">★★★★★</span>
+              <span class="gloss-badge__text">25%<small>저렴!</small></span>
+            </div>
+          </div>
+          <img class="review-card__img" src="./img/section9-img.png" alt="쉬폰커튼을 시공한 고객 거실" loading="lazy">
+          <p class="review-card__stars" aria-label="별점 5점 만점에 5점"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></p>
+          <h3 class="review-card__title">양주시 아파트 | 쉬폰커튼</h3>
+          <p class="review-card__text">거실이 조금 밋밋해서 쉬폰커튼을 설치했는데 정말 잘한 선택이에요! <br>햇살이 들어올 때 커튼 사이로 비치는 느낌이 너무 예쁘고, <br>집안 분위기가 한층 부드럽고 고급스러워졌어요. <br>원단도 마음에 들고 주름도 예쁘게 잡혀서 볼 때마다 기분이 좋네요. <br>예쁜 공간 만들어 주셔서 감사합니다!</p>
+        </article>
+      </div>
+      <!-- ▲ 후기 6 끝 -->
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10 · 무료 방문 실측 신청 (모든 '무료 실측' 버튼과 띠배너가 이곳 #apply 로 이동) -->
+<section class="s10" id="apply" aria-labelledby="s10-title">
+  <p class="s10__kicker s10-fade">무료 방문 실측</p>
+  <h2 class="s10__title s10-fade" id="s10-title" style="--d:.1s">하루 최대 10팀</h2>
+  <p class="s10__desc s10-fade" style="--d:.2s">품질 높은 1:1 맞춤 상담을 위해<br>방문 실측 한정 운영합니다.</p>
+
+  <form class="apply s10-fade" style="--d:.35s" id="applyForm" novalidate>
+    <div class="apply__progress" aria-hidden="true"></div>
+    <div class="apply__inner">
+
+      <!-- STEP 01 · 공간 / 제품 -->
+      <fieldset class="step is-active" data-step="1" aria-labelledby="step1-title">
+        <div class="step__head">
+          <p class="step__no">01</p>
+          <h3 class="step__title" id="step1-title">어떤 공간에 설치하시나요?</h3>
+          <p class="step__sub">공간과 제품을 아직 정하지 못하셔도 괜찮아요</p>
+        </div>
+        <div class="step__body">
+          <div class="field">
+            <span class="field__label">설치 장소</span>
+            <div class="choices"><label class="choice"><input type="radio" name="place" value="아파트"><span>아파트</span></label><label class="choice"><input type="radio" name="place" value="빌라"><span>빌라</span></label><label class="choice"><input type="radio" name="place" value="주택"><span>주택</span></label><label class="choice"><input type="radio" name="place" value="오피스텔"><span>오피스텔</span></label><label class="choice"><input type="radio" name="place" value="상업공간"><span>상업공간</span></label><label class="choice"><input type="radio" name="place" value="기타"><span>기타</span></label></div>
+          </div>
+          <div class="field">
+            <span class="field__label">관심 제품</span>
+            <div class="choices choices--auto"><label class="choice"><input type="radio" name="product" value="커튼"><span>커튼</span></label><label class="choice"><input type="radio" name="product" value="블라인드"><span>블라인드</span></label><label class="choice"><input type="radio" name="product" value="커튼 + 블라인드"><span>커튼 + 블라인드</span></label><label class="choice"><input type="radio" name="product" value="상담 후 결정"><span>상담 후 결정</span></label></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- STEP 02 · 방문 주소 / 희망일 -->
+      <fieldset class="step" data-step="2" aria-labelledby="step2-title">
+        <div class="step__head">
+          <p class="step__no">02</p>
+          <h3 class="step__title" id="step2-title">어디로 찾아뵐까요?</h3>
+          <p class="step__sub">방문 희망 일정은 상담 후 확정됩니다.</p>
+        </div>
+        <div class="step__body">
+          <div class="field" data-field="address">
+            <label class="field__label" for="fAddress">방문 주소 <span class="req">*</span></label>
+            <input class="input" id="fAddress" name="address" type="text" placeholder="시 · 구와 상세 주소를 입력해 주세요" autocomplete="street-address">
+            <p class="field__error">방문 주소를 입력해 주세요.</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="fDate">방문 희망일 (선택)</label>
+            <input class="input" id="fDate" name="date" type="date">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- STEP 03 · 성함 / 연락처 -->
+      <fieldset class="step" data-step="3" aria-labelledby="step3-title">
+        <div class="step__head">
+          <p class="step__no">03</p>
+          <h3 class="step__title" id="step3-title">연락받으실 정보를 알려주세요.</h3>
+          <p class="step__sub">남겨주신 연락처로 방문 상담을 안내해 드립니다.</p>
+        </div>
+        <div class="step__body">
+          <div class="field-row">
+            <div class="field" data-field="name">
+              <label class="field__label" for="fName">성함 <span class="req">*</span></label>
+              <input class="input" id="fName" name="name" type="text" placeholder="성함을 입력해 주세요" autocomplete="name">
+              <p class="field__error">성함을 입력해 주세요.</p>
+            </div>
+            <div class="field" data-field="phone">
+              <label class="field__label" for="fPhone">연락처 <span class="req">*</span></label>
+              <input class="input" id="fPhone" name="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" maxlength="13" autocomplete="tel">
+              <p class="field__error">연락처를 정확히 입력해 주세요. (예: 010-1234-5678)</p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- STEP 04 · 확인 / 동의 -->
+      <fieldset class="step step--confirm" data-step="4" aria-labelledby="step4-title">
+        <div class="step__head">
+          <p class="step__no">04</p>
+          <h3 class="step__title" id="step4-title">신청 내용을 확인해 주세요.</h3>
+          <p class="step__sub">확인 후 동의하시면 상담 신청이 완료됩니다.</p>
+        </div>
+        <div class="step__body">
+          <div class="summary" id="applySummary"></div>
+          <div class="field">
+            <label class="field__label" for="fMemo">문의 내용 <small>(선택)</small></label>
+            <textarea class="input" id="fMemo" name="memo" placeholder="설치 공간이나 원하시는 분위기를 편하게 알려주세요."></textarea>
+          </div>
+          <div class="agree" data-field="agree">
+            <label class="agree__check"><input type="checkbox" id="fAgree" name="agree"> 개인정보 수집 · 이용 동의 <small>(필수)</small></label>
+            <button type="button" class="agree__view" data-open="privacyModal">내용 보기</button>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="apply__nav">
+        <button type="button" class="btn-prev" id="btnPrev">← 이전 단계</button>
+        <button type="submit" class="btn-next" id="btnNext"><span>다음 단계</span><svg viewBox="0 0 18 14" fill="none" aria-hidden="true"><path d="M1 7h15M10 1l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <p class="apply__foot" id="applyFoot" hidden>방문 일정은 신청 후 상담으로 확정합니다.</p>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!-- 모달 · 개인정보 수집·이용 안내 -->
+<div class="modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+  <div class="modal__dim" data-close></div>
+  <div class="modal__box">
+    <button type="button" class="modal__close" data-close aria-label="닫기"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <h3 class="modal__title" id="privacyTitle">개인정보 수집·이용 안내</h3>
+    <ul class="modal__list">
+      <li><b>목적</b><span>방문 실측 및 견적 상담을 위한 연락</span></li>
+      <li><b>필수 항목</b><span>성함, 연락처, 주소</span></li>
+      <li><b>선택 항목</b><span>방문 희망일, 설치 장소, 관심 제품, 문의 내용</span></li>
+    </ul>
+    <p class="modal__note">동의를 거부할 수 있으며, 필수 항목 미동의 시 온라인 접수가 어렵습니다.</p>
+    <button type="button" class="modal__ok" id="privacyAgree">동의하고 닫기</button>
+  </div>
+</div>
+
+<!-- 모달 · 신청 완료 (선택·입력한 값이 그대로 표시됨) -->
+<div class="modal" id="doneModal" role="dialog" aria-modal="true" aria-labelledby="doneTitle">
+  <div class="modal__dim" data-close></div>
+  <div class="modal__box done">
+    <button type="button" class="modal__close" data-close aria-label="닫기"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <div class="done__icon"><svg viewBox="0 0 30 22" fill="none" aria-hidden="true"><path d="M2 11.5 L11 20 L28 2" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 class="modal__title" id="doneTitle">무료 방문 실측 신청 완료!</h3>
+    <p class="done__sub">남겨주신 연락처로 담당자가 연락드려<br>방문 일정을 확정해 드립니다.</p>
+    <div class="summary" id="doneSummary"></div>
+    <button type="button" class="modal__ok" data-close>확인</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1. 등장 애니메이션 시작 */
+  requestAnimationFrame(function () {
+    document.body.classList.add('is-ready');
+  });
+
+  /* 2. 띠배너 롤링 (3초 간격, 마지막 복제 항목에서 처음으로 순간 이동) */
+  var track = document.getElementById('topbarTrack');
+  var items = track.children.length;          // 3 (마지막은 첫 항목 복제)
+  var index = 0;
+  var rollTimer;
+
+  function itemHeight() {
+    return track.children[0].getBoundingClientRect().height;
+  }
+  function roll() {
+    index++;
+    track.classList.remove('no-anim');
+    track.style.transform = 'translateY(' + (-index * itemHeight()) + 'px)';
+  }
+  track.addEventListener('transitionend', function () {
+    if (index === items - 1) {
+      track.classList.add('no-anim');
+      index = 0;
+      track.style.transform = 'translateY(0)';
+    }
+  });
+  function startRoll() { stopRoll(); rollTimer = setInterval(roll, 3000); }
+  function stopRoll() { clearInterval(rollTimer); }
+  if (!reduceMotion) startRoll();
+
+  // 마우스를 올리면 잠시 멈춤, 탭이 숨겨지면 멈춤
+  var topbar = document.querySelector('.topbar');
+  topbar.addEventListener('mouseenter', stopRoll);
+  topbar.addEventListener('mouseleave', function () { if (!reduceMotion) startRoll(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stopRoll(); else if (!reduceMotion) startRoll();
+  });
+
+  /* 3. 숫자 카운터 (7,200 / 99) */
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  function countUp(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    if (reduceMotion) { el.textContent = target.toLocaleString('ko-KR'); return; }
+    var duration = target > 1000 ? 2000 : 1600;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      el.textContent = Math.round(easeOutCubic(p) * target).toLocaleString('ko-KR');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('.stat__num[data-count]');   // Hero · 후기 섹션 수치만
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          // 등장 애니메이션이 끝날 즈음 시작
+          setTimeout(function () { countUp(entry.target); }, 1300);
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { io.observe(el); });
+  } else {
+    counters.forEach(countUp);
+  }
+
+  /* 4. 배경 패럴랙스 (스크롤 시 배경이 천천히 움직임) */
+  var bg = document.querySelector('.hero__bg');
+  var hero = document.getElementById('hero');
+  if (!reduceMotion) {
+    var ticking = false;
+    bg.addEventListener('animationend', function () {
+      bg.style.animation = 'none';
+      bg.style.transform = 'scale(1)';
+    });
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        if (y < hero.offsetHeight) {
+          bg.style.transform = 'translate3d(0,' + (y * 0.25) + 'px,0) scale(1)';
+        }
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+  /* 5. SECTION 1 · 스크롤 진입 시 BEFORE → 화살표 → AFTER 순서로 등장 */
+  //    문구는 섹션이 보이기 시작할 때, 사진은 사진 영역이 충분히 보일 때 시작
+  var s1Targets = [
+    { el: document.querySelector('.s1'), threshold: 0.2 },
+    { el: document.querySelector('.ba'), threshold: 0.45 }
+  ];
+
+  /* 6. SECTION 2 · 물음표·제목 → 말풍선이 스크롤에 맞춰 하나씩 올라옴 → 마무리 문구 */
+  s1Targets.push({ el: document.querySelector('.s2'), threshold: 0.15 });
+  document.querySelectorAll('.bubble').forEach(function (b) {
+    s1Targets.push({ el: b, threshold: 0.6 });
+  });
+  s1Targets.push({ el: document.querySelector('.s2__close'), threshold: 0.6 });
+
+  /* 7. SECTION 3 · POINT 01 슬라이더 (커버플로우) */
+  s1Targets.push({ el: document.querySelector('.s3'), threshold: 0.15 });
+  if (window.Swiper) {
+    var s3El = document.querySelector('.s3-swiper');
+    var s3Wrap = s3El.querySelector('.swiper-wrapper');
+    var s3Originals = Array.prototype.slice.call(s3Wrap.children);
+    var s3Count = s3Originals.length;           // 실제 슬라이드 수 (복제본 제외)
+
+    // 무한 루프용 복제: 슬라이드가 적으면 자동으로 복사해서 채움 (HTML은 그대로 6장만 관리하면 됨)
+    while (s3Wrap.children.length < 12) {
+      s3Originals.forEach(function (slide) {
+        var clone = slide.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        s3Wrap.appendChild(clone);
+      });
+    }
+
+    var s3Pager = document.querySelector('.s3-pagination');
+    function updatePager(sw) {
+      var current = (sw.realIndex % s3Count) + 1;
+      s3Pager.innerHTML = '<span class="swiper-pagination-current">' + current + '</span> / ' + s3Count;
+    }
+
+    new Swiper(s3El, {
+      effect: 'coverflow',
+      centeredSlides: true,
+      slidesPerView: 'auto',
+      loop: true,
+      speed: 700,
+      spaceBetween: 40,
+      grabCursor: true,
+      coverflowEffect: {
+        rotate: 0,      // 회전 없이 평평하게
+        stretch: 0,
+        depth: 0,
+        scale: 0.74,    // 옆 카드 크기 (1 = 같은 크기)
+        modifier: 1,
+        slideShadows: false
+      },
+      autoplay: reduceMotion ? false : {
+        delay: 3800,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      navigation: { nextEl: '.s3-next', prevEl: '.s3-prev' },
+      keyboard: { enabled: true, onlyInViewport: true },
+      a11y: { prevSlideMessage: '이전 사례', nextSlideMessage: '다음 사례' },
+      breakpoints: {
+        0:   { spaceBetween: 16, coverflowEffect: { scale: 0.82 } },
+        769: { spaceBetween: 40, coverflowEffect: { scale: 0.74 } }
+      },
+      on: {
+        init: updatePager,
+        slideChange: updatePager
+      }
+    });
+  }
+  /* 8. SECTION 4 · POINT 02 기능 카드 (자동 전환 + 탭 진행 바) */
+  s1Targets.push({ el: document.querySelector('.s4'), threshold: 0.15 });
+  if (window.Swiper) {
+    var s4El = document.querySelector('.s4-swiper');
+    var s4Wrap = s4El.querySelector('.swiper-wrapper');
+    var s4Originals = Array.prototype.slice.call(s4Wrap.children);
+    var s4Count = s4Originals.length;
+    var s4Tabs = Array.prototype.slice.call(document.querySelectorAll('.s4-tab'));
+
+    // 카드가 3장뿐이라 무한 루프용으로 자동 복제 (HTML은 3장만 관리)
+    while (s4Wrap.children.length < 9) {
+      s4Originals.forEach(function (slide) {
+        var clone = slide.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        s4Wrap.appendChild(clone);
+      });
+    }
+
+    function syncTabs(sw) {
+      var active = sw.realIndex % s4Count;
+      s4Tabs.forEach(function (tab, i) {
+        var on = i === active;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.querySelector('.s4-tab__bar').style.transform = 'scaleX(0)';
+      });
+    }
+
+    var s4Swiper = new Swiper(s4El, {
+      slidesPerView: 'auto',
+      centeredSlides: true,
+      loop: true,
+      speed: 700,
+      spaceBetween: 35,
+      slideToClickedSlide: true,          // 옆 카드를 누르면 가운데로
+      autoplay: reduceMotion ? false : {
+        delay: 3000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      breakpoints: {
+        0:   { spaceBetween: 10 },
+        769: { spaceBetween: 35 }
+      },
+      on: {
+        init: syncTabs,
+        slideChange: syncTabs,
+        // 자동 전환까지 남은 시간을 탭 아래 빨간 바로 표시
+        autoplayTimeLeft: function (sw, time, progress) {
+          var bar = s4Tabs[sw.realIndex % s4Count].querySelector('.s4-tab__bar');
+          bar.style.transform = 'scaleX(' + (1 - progress) + ')';
+        }
+      }
+    });
+
+    s4Tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () {
+        // 지금 위치에서 가장 가까운 같은 카드로 이동
+        var target = s4Swiper.realIndex - (s4Swiper.realIndex % s4Count) + i;
+        s4Swiper.slideToLoop(target);
+      });
+    });
+  }
+
+  /* 9. SECTION 5 · POINT 03 배경 줌 + 원단 포인트 */
+  var s5 = document.querySelector('.s5');
+  if (s5) {
+    s1Targets.push({ el: s5, threshold: 0.2 });
+
+    // 스크롤할수록 배경이 살짝 줌아웃 (1.08 → 1)
+    var s5Media = s5.querySelector('.s5__media');
+    if (!reduceMotion) {
+      var s5Ticking = false;
+      var s5Update = function () {
+        var r = s5.getBoundingClientRect();
+        var vh = window.innerHeight;
+        var p = Math.min(Math.max((vh - r.top) / (vh + r.height), 0), 1);
+        s5Media.style.transform = 'scale(' + (1.08 - 0.08 * Math.min(p * 1.6, 1)) + ')';
+        s5Ticking = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!s5Ticking) { s5Ticking = true; requestAnimationFrame(s5Update); }
+      }, { passive: true });
+      s5Update();
+    }
+
+    // 핀: 마우스를 올리거나 누르면 설명 카드 열림
+    var hotspots = Array.prototype.slice.call(s5.querySelectorAll('.hotspot'));
+    function setOpen(h, open) {
+      h.classList.toggle('is-open', open);
+      h.querySelector('.hotspot__btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    var userTouched = false;
+    hotspots.forEach(function (h) {
+      var btn = h.querySelector('.hotspot__btn');
+      btn.addEventListener('click', function () {
+        userTouched = true;
+        var willOpen = !h.classList.contains('is-open');
+        hotspots.forEach(function (o) { setOpen(o, false); });
+        setOpen(h, willOpen);
+      });
+      h.addEventListener('mouseenter', function () { userTouched = true; setOpen(h, true); });
+      h.addEventListener('mouseleave', function () { setOpen(h, false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') hotspots.forEach(function (o) { setOpen(o, false); });
+    });
+
+    // 처음 보일 때 핀 설명을 하나씩 잠깐 보여주고 닫음 (사용자가 먼저 만지면 생략)
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      var s5Demo = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        s5Demo.disconnect();
+        hotspots.forEach(function (h, i) {
+          setTimeout(function () { if (!userTouched) setOpen(h, true); }, 2400 + i * 2800);
+          setTimeout(function () { if (!userTouched) setOpen(h, false); }, 4800 + i * 2800);
+        });
+      }, { threshold: 0.45 });
+      s5Demo.observe(s5);
+    }
+  }
+
+  /* 10. SECTION 6 · WHY 비교표 (줄마다 순서대로 등장 + 가격 카운트다운 + 같은 줄 강조) */
+  var cmp = document.querySelector('.cmp');
+  if (cmp) {
+    s1Targets.push({ el: document.querySelector('.s6'), threshold: 0.15 });
+    s1Targets.push({ el: cmp, threshold: 0.4 });
+
+    // 왼쪽 빨간 태그를 각 줄의 data-tag 로 자동 생성 (문구는 한 곳에서만 관리)
+    var oursRows = Array.prototype.slice.call(cmp.querySelectorAll('.cmp__ours li'));
+    var rowTops = ['6.9375em', '12.0625em', '17.4375em', '22.875em'];
+    oursRows.forEach(function (li, i) {
+      var tag = document.createElement('div');
+      tag.className = 'cmp__tag';
+      tag.setAttribute('data-row', li.getAttribute('data-row'));
+      tag.setAttribute('aria-hidden', 'true');
+      tag.style.setProperty('--i', i);
+      tag.style.top = rowTops[i] || (6.9375 + i * 5.375) + 'em';
+      tag.innerHTML = '<i class="cmp__tag-sheen"></i><span></span>';
+      tag.querySelector('span').textContent = li.getAttribute('data-tag');
+      cmp.appendChild(tag);
+    });
+
+    // 같은 줄(태그 · 메종드커튼 · 타사)을 함께 강조
+    cmp.addEventListener('mouseover', function (e) {
+      var hit = e.target.closest('[data-row]');
+      var row = hit ? hit.getAttribute('data-row') : null;
+      cmp.querySelectorAll('[data-row]').forEach(function (el) {
+        el.classList.toggle('is-hl', el.getAttribute('data-row') === row);
+      });
+    });
+    cmp.addEventListener('mouseleave', function () {
+      cmp.querySelectorAll('.is-hl').forEach(function (el) { el.classList.remove('is-hl'); });
+    });
+
+    // 가격: 첫 줄이 나타날 때 100 → 75 로 카운트다운
+    var countEl = cmp.querySelector('.cmp__count');
+    if (countEl && !reduceMotion && 'IntersectionObserver' in window) {
+      var from = parseInt(countEl.getAttribute('data-from'), 10);
+      var to = parseInt(countEl.getAttribute('data-to'), 10);
+      countEl.textContent = from;
+      var cmpObs = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        cmpObs.disconnect();
+        setTimeout(function () {
+          var start = null, dur = 1300;
+          function tick(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / dur, 1);
+            countEl.textContent = Math.round(from - (from - to) * easeOutCubic(p));
+            if (p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        }, 1100);
+      }, { threshold: 0.4 });
+      cmpObs.observe(cmp);
+    }
+  }
+
+  /* 11. SECTION 7 · 약속: 도장 → 카드가 스크롤에 맞춰 하나씩 + 체크 긋기 → CTA */
+  var s7 = document.querySelector('.s7');
+  if (s7) {
+    s1Targets.push({ el: s7, threshold: 0.12 });
+    document.querySelectorAll('.promise').forEach(function (p) {
+      s1Targets.push({ el: p, threshold: 0.7 });
+    });
+    // CTA는 버튼이 보일 때 따로 등장
+    var s7Cta = s7.querySelector('.s7__cta');
+    s7Cta.classList.remove('s7-fade');
+    s7Cta.classList.add('s7-cta-fade');
+    s1Targets.push({ el: s7Cta, threshold: 0.6 });
+
+    // 실크 배경이 스크롤보다 천천히 움직이는 패럴랙스
+    var s7Bg = s7.querySelector('.s7__bg');
+    if (!reduceMotion) {
+      var s7Tick = false;
+      var s7Update = function () {
+        var r = s7.getBoundingClientRect();
+        var center = r.top + r.height / 2 - window.innerHeight / 2;
+        s7Bg.style.transform = 'translate3d(0,' + (center * -0.08) + 'px,0)';
+        s7Tick = false;
+      };
+      window.addEventListener('scroll', function () {
+        if (!s7Tick) { s7Tick = true; requestAnimationFrame(s7Update); }
+      }, { passive: true });
+      s7Update();
+    }
+  }
+
+  /* 12. SECTION 8 · 유통 비교 그래프 (막대 쌓기 → 가격 카운트 → 뱃지) */
+  var chart = document.querySelector('.chart');
+  if (chart) {
+    s1Targets.push({ el: document.querySelector('.s8'), threshold: 0.15 });
+    s1Targets.push({ el: chart, threshold: 0.45 });
+
+    // 가격 숫자: 막대가 자라는 동안 0부터 올라감
+    var priceEls = chart.querySelectorAll('.js-count');
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      priceEls.forEach(function (el) { el.textContent = '0'; });
+      var chartObs = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        chartObs.disconnect();
+        var plan = [{ el: priceEls[0], delay: 200, dur: 1400 }, { el: priceEls[1], delay: 1700, dur: 900 }];
+        plan.forEach(function (p) {
+          var target = parseInt(p.el.getAttribute('data-count'), 10);
+          setTimeout(function () {
+            var start = null;
+            function tick(ts) {
+              if (!start) start = ts;
+              var k = Math.min((ts - start) / p.dur, 1);
+              p.el.textContent = Math.round(target * easeOutCubic(k));
+              if (k < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          }, p.delay);
+        });
+      }, { threshold: 0.45 });
+      chartObs.observe(chart);
+    }
+
+    // 도매·판매점 마진에 마우스를 올리면 메종드커튼 쪽 '빠진 자리'와 연결해서 강조
+    chart.querySelectorAll('.seg--dist, .us-gap').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { chart.classList.add('is-linked'); });
+      el.addEventListener('mouseleave', function () { chart.classList.remove('is-linked'); });
+    });
+  }
+
+  /* 13. SECTION 9 · 실제 고객 후기 슬라이더 (커버플로우 · 자동 재생) */
+  var s9 = document.querySelector('.s9');
+  if (s9) {
+    s1Targets.push({ el: s9, threshold: 0.12 });
+    if (window.Swiper) {
+      var s9El = s9.querySelector('.s9-swiper');
+      var s9Wrap = s9El.querySelector('.swiper-wrapper');
+      var s9Originals = Array.prototype.slice.call(s9Wrap.children);
+
+      // 무한 루프용 자동 복제 (HTML은 실제 후기만 관리)
+      while (s9Wrap.children.length < 12) {
+        s9Originals.forEach(function (slide) {
+          var clone = slide.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          s9Wrap.appendChild(clone);
+        });
+      }
+
+      new Swiper(s9El, {
+        effect: 'coverflow',
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        loop: true,
+        speed: 750,
+        spaceBetween: 40,
+        grabCursor: true,
+        slideToClickedSlide: true,
+        coverflowEffect: {
+          rotate: 0,
+          stretch: 0,
+          depth: 0,
+          scale: 0.74,    // 옆 카드 크기 (1 = 같은 크기)
+          modifier: 1,
+          slideShadows: false
+        },
+        autoplay: reduceMotion ? false : {
+          delay: 3500,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        },
+        keyboard: { enabled: true, onlyInViewport: true },
+        a11y: { prevSlideMessage: '이전 후기', nextSlideMessage: '다음 후기' },
+        breakpoints: {
+          0:   { spaceBetween: 16, coverflowEffect: { scale: 0.82 } },
+          769: { spaceBetween: 40, coverflowEffect: { scale: 0.74 } }
+        }
+      });
+    }
+  }
+
+  /* 14. SECTION 10 · 무료 방문 실측 신청 (4단계 폼 + 모달) */
+  var applyForm = document.getElementById('applyForm');
+  if (applyForm) {
+    s1Targets.push({ el: document.querySelector('.s10'), threshold: 0.12 });
+
+    var steps = Array.prototype.slice.call(applyForm.querySelectorAll('.step'));
+    var progress = applyForm.querySelector('.apply__progress');
+    var btnNext = document.getElementById('btnNext');
+    var btnPrev = document.getElementById('btnPrev');
+    var foot = document.getElementById('applyFoot');
+    var phoneInput = document.getElementById('fPhone');
+    var dateInput = document.getElementById('fDate');
+    var current = 1;
+
+    // 오늘 이전 날짜는 고를 수 없게
+    var today = new Date();
+    dateInput.min = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+    // 연락처 자동 하이픈 (01012345678 → 010-1234-5678)
+    phoneInput.addEventListener('input', function () {
+      var d = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+      phoneInput.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3)
+        : d.slice(0, 3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4);
+    });
+
+    function val(name) {
+      var el = applyForm.elements[name];
+      if (!el) return '';
+      if (el instanceof RadioNodeList) return el.value || '';
+      if (el.type === 'checkbox') return el.checked;
+      return (el.value || '').trim();
+    }
+    function formatDate(v) {
+      if (!v) return '';
+      var p = v.split('-');
+      return p[0] + '년 ' + Number(p[1]) + '월 ' + Number(p[2]) + '일';
+    }
+    function setError(name, on) {
+      var box = applyForm.querySelector('[data-field="' + name + '"]');
+      if (box) box.classList.toggle('has-error', on);
+    }
+    // 입력하면 오류 표시 바로 지움
+    applyForm.addEventListener('input', function (e) {
+      var box = e.target.closest('[data-field]');
+      if (box) box.classList.remove('has-error');
+    });
+
+    function validate(step) {
+      var ok = true;
+      if (step === 2) {
+        var a = !!val('address'); setError('address', !a); ok = a;
+      }
+      if (step === 3) {
+        var n = !!val('name');
+        var p = /^01[016789]-\d{3,4}-\d{4}$/.test(val('phone'));
+        setError('name', !n); setError('phone', !p); ok = n && p;
+      }
+      if (step === 4) {
+        var g = val('agree'); setError('agree', !g); ok = g;
+      }
+      if (!ok) {
+        var first = applyForm.querySelector('.step.is-active .has-error input');
+        if (first) first.focus();
+      }
+      return ok;
+    }
+
+    // 선택·입력값 요약 (4단계와 완료 모달에 같은 내용 표시)
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    function summaryHTML(withEdit) {
+      var place = [val('place'), val('product')].filter(Boolean).join(' · ');
+      var visit = [val('address'), formatDate(val('date'))].filter(Boolean).join(' · ');
+      var contact = [val('name'), val('phone')].filter(Boolean).join(' · ');
+      var rows = [
+        { key: '설치 장소', value: place, empty: '상담 시 결정', step: 1 },
+        { key: '방문 정보', value: visit, empty: '-', step: 2 },
+        { key: '연락처', value: contact, empty: '-', step: 3 }
+      ];
+      if (!withEdit && val('memo')) rows.push({ key: '문의 내용', value: val('memo'), empty: '', step: 4 });
+      return rows.map(function (r) {
+        return '<div class="summary__row"><span class="summary__key">' + r.key + '</span>' +
+          '<span class="summary__val' + (r.value ? '' : ' is-empty') + '">' + esc(r.value || r.empty) + '</span>' +
+          (withEdit ? '<button type="button" class="summary__edit" data-goto="' + r.step + '">수정</button>' : '') +
+          '</div>';
+      }).join('');
+    }
+
+    function goTo(n, back) {
+      current = n;
+      steps.forEach(function (st) {
+        var on = Number(st.getAttribute('data-step')) === n;
+        st.classList.toggle('is-active', on);
+        st.classList.toggle('is-back', !!back);
+      });
+      progress.style.width = (n * 25) + '%';
+      btnPrev.classList.toggle('is-shown', n > 1);
+      btnNext.querySelector('span').textContent = n === 4 ? '무료 방문 실측 신청하기' : '다음 단계';
+      foot.hidden = n !== 4;
+      if (n === 4) document.getElementById('applySummary').innerHTML = summaryHTML(true);
+      var top = applyForm.getBoundingClientRect().top;
+      if (top < 60) applyForm.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+
+    btnPrev.addEventListener('click', function () { if (current > 1) goTo(current - 1, true); });
+    document.getElementById('applySummary').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-goto]');
+      if (b) goTo(Number(b.getAttribute('data-goto')), true);
+    });
+
+    // ※ 실제 접수는 서버 연결이 필요합니다.
+    //    아래 함수 안에서 사용하는 접수 방식(자체 서버 API, 구글 시트, 폼 서비스 등)으로 data 를 보내도록 연결해 주세요.
+    //    지금은 화면 흐름만 동작하며, 어디로도 전송되지 않습니다.
+    function submitApplication(data) {
+      return Promise.resolve(data);
+    }
+
+    applyForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validate(current)) return;
+      if (current < 4) { goTo(current + 1); return; }
+
+      var data = {
+        place: val('place'), product: val('product'),
+        address: val('address'), date: val('date'),
+        name: val('name'), phone: val('phone'),
+        memo: val('memo'), agree: val('agree')
+      };
+      btnNext.disabled = true;
+      submitApplication(data).then(function () {
+        document.getElementById('doneSummary').innerHTML = summaryHTML(false);
+        openModal('doneModal');
+      }).finally(function () { btnNext.disabled = false; });
+    });
+
+    // 모달 열기/닫기 (ESC, 바깥 클릭, 닫기 버튼 · 포커스 복귀)
+    var lastFocus = null;
+    function openModal(id) {
+      var m = document.getElementById(id);
+      lastFocus = document.activeElement;
+      m.classList.add('is-open');
+      document.body.classList.add('is-modal-open');
+      var focusEl = m.querySelector('.modal__ok') || m.querySelector('button');
+      setTimeout(function () { focusEl.focus(); }, 30);
+    }
+    function closeModal(m) {
+      m.classList.remove('is-open');
+      if (!document.querySelector('.modal.is-open')) document.body.classList.remove('is-modal-open');
+      if (m.id === 'doneModal') resetForm();
+      if (lastFocus) lastFocus.focus();
+    }
+    document.querySelectorAll('[data-open]').forEach(function (b) {
+      b.addEventListener('click', function () { openModal(b.getAttribute('data-open')); });
+    });
+    document.querySelectorAll('.modal').forEach(function (m) {
+      m.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) closeModal(m); });
+    });
+    document.addEventListener('keydown', function (e) {
+      var open = document.querySelector('.modal.is-open');
+      if (!open) return;
+      if (e.key === 'Escape') closeModal(open);
+      if (e.key === 'Tab') {   // 모달 안에서만 Tab 이동
+        var f = open.querySelectorAll('button, [href], input, textarea');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    // '동의하고 닫기' 누르면 체크박스 자동 체크
+    document.getElementById('privacyAgree').addEventListener('click', function () {
+      document.getElementById('fAgree').checked = true;
+      setError('agree', false);
+      closeModal(document.getElementById('privacyModal'));
+    });
+
+    function resetForm() {
+      applyForm.reset();
+      applyForm.querySelectorAll('.has-error').forEach(function (el) { el.classList.remove('has-error'); });
+      goTo(1, true);
+    }
+  }
+
+  s1Targets.forEach(function (t) {
+    if (!t.el) return;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      t.el.classList.add('in-view');
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: t.threshold });
+    obs.observe(t.el);
+  });
+})();
+</script>
+</body>
+</html>
